@@ -1,0 +1,9 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+
+{% block body %}
+<form action="{{ path("admin.product.list") }}" method="POST">
+{{ form_widget(form) }}
+<input type="submit"/>
+</form>
+{% endblock %}

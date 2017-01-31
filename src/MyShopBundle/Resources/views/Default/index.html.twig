@@ -1,1 +1,20 @@
-Hello World!
+{% extends "MyShopBundle::layout.html.twig" %}
+
+{% block someblock %}
+Hello World! And you, <b>{{ firstname }}</b>{{ dump(products) }}
+{% endblock %}
+
+{% block product %}
+    {% for product in products %}
+    <div class="s-12 m-6 l-4">
+        <img src="{{ asset("bundles/myshop/") }}{{ product.imgpath }}">
+        <h4 class="margin-bottom"><strong>{{ product.productname }}</strong> | EUR {{ product.price }}</h4>
+        <form class="customform s-12 margin-bottom2x" action="">
+            <div><button class="button rounded-btn submit-btn s-12" type="submit">Add to Cart</button></div>
+        </form>
+    </div>
+    {% else %}
+        No products!
+    {% endfor %}
+{% endblock %}
+

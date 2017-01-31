@@ -1,0 +1,17 @@
+admin_homepage:
+    path:     /
+    defaults: { _controller: AdminBundle:Default:index }
+
+admin.product.add:
+    path:     /add/
+    defaults: { _controller: AdminBundle:Product:add }
+
+admin.product.list:
+    path:     /list/
+    defaults: { _controller: AdminBundle:Product:list }
+
+admin.product.listbycategory:
+    path:     /listbycategory/{id_category}/
+    defaults: { _controller: AdminBundle:Product:listbycategory}
+    requirements:
+            id_category: \d+
