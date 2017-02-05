@@ -50,8 +50,10 @@ class ProductPhotoController extends Controller
 
             $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
 
-            $savePhotoFileService = $this->get("admin.img_utility");
-            $photoFileName = $savePhotoFileService->photoFileSave($product->getId(), $this->container, $photoFile);
+            $imageUtility = $this->get("admin.img_utility");
+            $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
+
+            $photoFileName = $imageUtility->photoFileSave($product->getId(), $photoDirPrefix, $photoFile);
 
             $photo->setFileName($photoFileName);
             $photo->setProduct($product);
@@ -86,12 +88,15 @@ class ProductPhotoController extends Controller
             $form->handleRequest($request);
 
             /** @var UploadedFile $photoFile */
-            $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
-            if ($photoFile !== null) {
 
-                $savePhotoFileService = $this->get("admin.img_utility");
-                $photoFileName = $savePhotoFileService->photoFileSave($product_id,
-                    $this->container, $photoFile);
+            if (isset($request->files->get("myshopbundle_productphoto")["photoFile"])) {
+
+                $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
+                $imageUtility = $this->get("admin.img_utility");
+                $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
+
+                $photoFileName = $imageUtility->photoFileSave($product_id,
+                    $photoDirPrefix, $photoFile);
 
                 $oldFileName = $photo->getFileName();
                 $oldFile = $this->get("kernel")->getRootDir() . "/../web/photos/" . $oldFileName;
@@ -144,9 +149,10 @@ class ProductPhotoController extends Controller
         $product = $this->getDoctrine()->getRepository("MyShopBundle:Product")->find($product_id);
         $photo = $this->getDoctrine()->getRepository("MyShopBundle:ProductPhoto")->find($photo_id);
 
+        $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
         $imageUtility = $this->get("admin.img_utility");
         try {
-            $photoFileName = $imageUtility->setMainProductPhoto($product, $photo, $this->container);
+            $photoFileName = $imageUtility->setMainProductPhoto($product, $photo, $photoDirPrefix);
         } catch (\Exception $exception) {
             die("Something wrong with Main photo set!");
         }

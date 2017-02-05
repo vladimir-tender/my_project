@@ -5,7 +5,6 @@ namespace AdminBundle\Services\Image;
 
 use MyShopBundle\Entity\Product;
 use MyShopBundle\Entity\ProductPhoto;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Eventviva\ImageResize;
 
@@ -49,7 +48,7 @@ class ImageUtility
         return true;
     }
 
-    public function photoFileSave($product_id, ContainerInterface $container, UploadedFile $photoFile)
+    public function photoFileSave($product_id, $photoDirPrefix, UploadedFile $photoFile)
     {
         try{
             $this->checkImgType($photoFile);
@@ -58,17 +57,17 @@ class ImageUtility
         }
 
         $photoFileName = $product_id . "_" . time() . "." . $photoFile->getClientOriginalExtension();
-        $photoDirPath = $container->get("kernel")->getRootDir() . "/../web/photos/";
 
-        $photoFile->move($photoDirPath, $photoFileName);
+
+        $photoFile->move($photoDirPrefix, $photoFileName);
 
         return $photoFileName;
     }
 
-    public function setMainProductPhoto(Product $product, ProductPhoto $photo, ContainerInterface $container)
+    public function setMainProductPhoto(Product $product, ProductPhoto $photo, $photoDirPrefix)
     {
         $photoFileName = $photo->getFileName();
-        $photoDirPrefix = $container->get("kernel")->getRootDir() . "/../web/photos/";
+
         $fileNamePrefix = "main__";
         $photoFullName =  $photoDirPrefix . $photoFileName;
 
