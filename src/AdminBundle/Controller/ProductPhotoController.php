@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use MyShopBundle\Entity\ProductPhoto;
 use MyShopBundle\Form\ProductPhotoType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
