@@ -1,0 +1,13 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+{% block body %}
+    <h3>Редактирование фото</h3>
+    <form enctype="multipart/form-data" method="post" action="{{ path("admin.product_photo_edit", {idPhoto: photo.id}) }}">
+        {{ form_widget(form) }}
+        <br>
+        Текущее фото:
+        <img src="{{ asset("/photos/") }}{{ photo.filename }}" height="100">
+        <input type="submit" value="Сохранить" />
+    </form>
+    {#{{ dump(request.headers) }}#}
+{% endblock %}

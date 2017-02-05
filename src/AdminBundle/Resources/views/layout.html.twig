@@ -9,12 +9,25 @@
 </head>
 <body>
 
-<table border="1">
-    <tr><th></th></tr>
+<table border="1" style="width: 100%">
+    <tr>
+        <td valign="top" style="width: 400px">
+            <ul>
+                <li><a href="{{ path("admin_homepage") }}">Главная</a></li>
+                <li><a href="{{ path("admin.product.list") }}">Все товары</a></li>
+                <li><a href="{{ path("admin.product.categorylist") }}">Товары по категориям</a></li>
+            </ul>
+
+            <ul>
+                <li><a href="{{ path("admin.product.add") }}">Добавить товар</a></li>
+                <li><a href="{{ path("admin.category.list") }}">Категории</a></li>
+            </ul>
+        </td>
+        <td valign="top">
+            {% block body %}
+            {% endblock %}
+        </td>
+    </tr>
 </table>
-
-{% block body %}
-
-{% endblock %}
 </body>
 </html>

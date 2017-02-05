@@ -7,7 +7,7 @@ Hello World! And you, <b>{{ firstname }}</b>{{ dump(products) }}
 {% block product %}
     {% for product in products %}
     <div class="s-12 m-6 l-4">
-        <img src="{{ asset("bundles/myshop/") }}{{ product.imgpath }}">
+        <img src="{{ asset("bundles/myshop/img/330x190-2.jpg") }}">
         <h4 class="margin-bottom"><strong>{{ product.productname }}</strong> | EUR {{ product.price }}</h4>
         <form class="customform s-12 margin-bottom2x" action="">
             <div><button class="button rounded-btn submit-btn s-12" type="submit">Add to Cart</button></div>

@@ -1,0 +1,10 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+{% block body %}
+    <h2>Добавление категории</h2>
+    <form action="{{ path("admin.category.add") }}" method="POST">
+        {{ form_widget(form) }}
+        <input type="submit" value="Сохранить">
+    </form>
+
+{% endblock %}

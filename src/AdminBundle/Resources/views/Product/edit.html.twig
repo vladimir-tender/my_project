@@ -1,0 +1,10 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+
+{% block body %}
+    <h2>Редактировать информацию о товаре</h2>
+    <form action="{{ path("admin.product.edit", {id: product.id}) }}" method="POST">
+        {{ form_widget(form) }}
+        <input type="submit"/>
+    </form>
+{% endblock %}

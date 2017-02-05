@@ -2,7 +2,8 @@
 
 
 {% block body %}
-<form action="{{ path("admin.product.list") }}" method="POST">
+<h2>Добавить товар</h2>
+<form action="{{ path("admin.product.add") }}" method="POST">
 {{ form_widget(form) }}
 <input type="submit"/>
 </form>

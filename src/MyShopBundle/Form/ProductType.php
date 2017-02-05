@@ -30,9 +30,6 @@ class ProductType extends AbstractType
             ->add('price', NumberType::class, [
                 "label" => 'Цена товара'
             ])
-            ->add('adddate', TimeType::class, [
-                "label" => 'Дата создания'
-            ])
             ->add('offer', NumberType::class, [
                 "label" => 'Акция'
             ])
@@ -41,9 +38,6 @@ class ProductType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => "Описание товара"
-            ])
-            ->add('imgpath', TextType::class, [
-                "label" => "Картинка"
             ])
         ;
     }

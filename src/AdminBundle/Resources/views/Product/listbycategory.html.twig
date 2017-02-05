@@ -1,6 +1,7 @@
 {% extends "AdminBundle::layout.html.twig" %}
 {% block body %}
-<a href="{{ path("admin.product.list") }}">Выбор категории</a>
+    <h2>{{ category.category }}</h2>
+<a href="{{ path("admin.product.categorylist") }}">Выбор категории</a>
 <a href="{{ path("admin.product.add") }}">Добавить товар</a>
 
 <table border="1">
@@ -8,13 +9,17 @@
         <td>Модель</td>
         <td>Категория</td>
         <td>Цена</td>
+        <td></td>
     </tr>
-    {{ dump(productList ) }}
 {% for product in productList %}
     <tr>
         <td>{{ product.productname() }}</td>
         <td>{{ product.getCategory().getCategory() }}</td>
         <td>{{ product.getPrice() }}</td>
+        <td><a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a>
+            <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a>
+            <a href="{{ path("admin.product_delete", {id: product.id}) }}">Удалить</a>
+        </td>
         {#<td>
           <a href="{{ path("my_shop.admin.product_delete", {id:product.id}) }}">Удалить</a><br/>
            <a href="{{ path("my_shop_admin.product_edit", {id:product.id}) }}">Редактирование</a>
