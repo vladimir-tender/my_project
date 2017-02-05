@@ -80,6 +80,10 @@ class Product
      */
     private $photos;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true, name="main_photo")
+     */
+    private $main_photo;
 
     public function __construct()
     {
@@ -117,7 +121,7 @@ class Product
     /**
      * Get category
      *
-     * @return int
+     * @return string
      */
     public function getCategory()
     {
@@ -269,29 +273,6 @@ class Product
         return $this->description;
     }
 
-    /**
-     * Set imgpath
-     *
-     * @param string $imgpath
-     *
-     * @return Product
-     */
-    public function getImgpath()
-    {
-        return $this->imgpath;
-    }
-
-    /**
-     * Get imgpath
-     *
-     * @return string
-     */
-    public function setImgpath($imgpath)
-    {
-        $this->imgpath = $imgpath;
-    }
-
-
 
     /**
      * Add photo
@@ -326,4 +307,22 @@ class Product
     {
         return $this->photos;
     }
+
+    /**
+     * @return string
+     */
+    public function getMainPhoto()
+    {
+        return $this->main_photo;
+    }
+
+    /**
+     * @param string $main_photo
+     */
+    public function setMainPhoto($main_photo)
+    {
+        $this->main_photo = $main_photo;
+    }
+
+
 }

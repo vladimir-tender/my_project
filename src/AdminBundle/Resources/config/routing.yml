@@ -44,6 +44,12 @@ admin.product_photo_edit:
     requirements:
         idProduct: \d+
 
+admin.product_photo_delete:
+    path:   /product/{idPhoto}/photo/delete
+    defaults: { _controller: AdminBundle:ProductPhoto:delete }
+    requirements:
+        idProduct: \d+
+
 admin.product_photo_list:
     path:   /product/{idProduct}/photos
     defaults: { _controller: AdminBundle:ProductPhoto:list }
@@ -69,3 +75,10 @@ admin.category.delete:
     defaults: { _controller: AdminBundle:Category:delete}
     requirements:
         category_id: \d+
+
+admin.product_photo_set_main:
+    path:   /product/{product_id}/{photo_id}/mainphoto
+    defaults: { _controller: AdminBundle:ProductPhoto:mainPhoto}
+    requirements:
+        product_id: \d+
+        photo_id: \d+

@@ -8,6 +8,15 @@
 
 
     <table>
+        <tr>
+    {% if product.getMainPhoto() %}
+        <td>Главное фото</td>
+        <td><img src="/photos/{{ product.getMainPhoto() }}"></td>
+    {% else %}
+        <td>Нет главного фото</td>
+        <td></td>
+    {% endif %}
+        </tr>
     {% for photo in product.getPhotos() %}
         <tr>
             <td>{{ photo.getTitle() }}</td>
@@ -15,8 +24,9 @@
                 <img src="/photos/{{ photo.getFileName() }}" height="100"/>
             </td>
             <td>
+                <a href="{{ path("admin.product_photo_set_main", {product_id: product.id, photo_id: photo.id}) }}">Сделать главным фото</a>
                 <a href="{{ path("admin.product_photo_edit", {idPhoto: photo.id }) }}">Редактирование</a>
-                <a href="#">Удалить</a>
+                <a href="{{ path("admin.product_photo_delete", {idPhoto: photo.id }) }}">Удалить</a>
             </td>
         </tr>
     {% endfor %}

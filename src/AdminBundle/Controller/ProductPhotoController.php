@@ -2,15 +2,17 @@
 
 namespace AdminBundle\Controller;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use MyShopBundle\Entity\ProductPhoto;
 use MyShopBundle\Form\ProductPhotoType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
+
+/**
+ * @property  ContainerInterface $container
+ */
 class ProductPhotoController extends Controller
 {
 
@@ -20,7 +22,6 @@ class ProductPhotoController extends Controller
     public function listAction($idProduct)
     {
         $product = $this->getDoctrine()->getManager()->getRepository("MyShopBundle:Product")->find($idProduct);
-
         return [
             "product" => $product
         ];
@@ -30,7 +31,7 @@ class ProductPhotoController extends Controller
      * @Template()
      */
     public function addAction(Request $request, $idProduct)
-    {//Request $request, $idProduct
+    {
         $manager = $this->getDoctrine()->getManager();
         $product = $manager->getRepository("MyShopBundle:Product")->find($idProduct);
 
@@ -41,28 +42,15 @@ class ProductPhotoController extends Controller
         $photo = new ProductPhoto();
         $form = $this->createForm(ProductPhotoType::class, $photo);
 
-        if ($request->isMethod("POST"))
-        {
+        if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
-            $filesAr = $request->files->get("myshopbundle_productphoto");
-
             /** @var UploadedFile $photoFile */
-            $photoFile = $filesAr["photoFile"];
-            $mimeType = $photoFile->getClientMimeType();
-            if ($mimeType !== "image/jpeg" and $mimeType !== "image/jpg" and $mimeType !== "image/gif" and $mimeType !== "image/png") {
-                throw new InvalidArgumentException("MimeType is blocked!");
-            }
 
-            $fileExt = $photoFile->getClientOriginalExtension();
-            if ($fileExt !== "jpg" and $fileExt !== "png" and $fileExt !== "gif" and $fileExt !== "jpeg") {
-                throw new InvalidArgumentException("Extension is blocked!");
-            }
+            $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
 
-            $photoFileName = $product->getId() . rand(100000000, 999999999) . "." . $photoFile->getClientOriginalExtension();
-            $photoDirPath = $this->get("kernel")->getRootDir() . "/../web/photos/";
-
-            $photoFile->move($photoDirPath, $photoFileName);
+            $savePhotoFileService = $this->get("admin.img_utility");
+            $photoFileName = $savePhotoFileService->photoFileSave($product->getId(), $this->container, $photoFile);
 
             $photo->setFileName($photoFileName);
             $photo->setProduct($product);
@@ -70,16 +58,15 @@ class ProductPhotoController extends Controller
             $manager->persist($photo);
             $manager->flush();
 
-            return $this->redirectToRoute("admin.product_photo_list", ["idProduct" => $product->getId()]);
+            return $this->redirectToRoute("admin.product_photo_list", [
+                "idProduct" => $product->getId()
+            ]);
         }
-
 
         return [
             "form" => $form->createView(),
             "product" => $product
         ];
-
-
     }
 
     /**
@@ -89,51 +76,87 @@ class ProductPhotoController extends Controller
     {
 
         $manager = $this->getDoctrine()->getManager();
-        $productPhoto = $manager->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
+        $photo = $manager->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
+        $product_id = $photo->getProduct()->getId();
 
-        $form = $this->createForm(ProductPhotoType::class, $productPhoto);
+        $form = $this->createForm(ProductPhotoType::class, $photo);
 
-        if ($request->isMethod("POST"))
-        {
+        if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
-            $filesAr = $request->files->get("myshopbundle_productphoto");
-
-
             /** @var UploadedFile $photoFile */
-            $photoFile = $filesAr["photoFile"];
-            if ($photoFile->isFile())
-            {
-                $mimeType = $photoFile->getClientMimeType();
-                if ($mimeType !== "image/jpeg" and $mimeType !== "image/jpg" and $mimeType !== "image/gif" and $mimeType !== "image/png") {
-                    throw new InvalidArgumentException("MimeType is blocked!");
+            $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
+            if ($photoFile !== null) {
+
+                $savePhotoFileService = $this->get("admin.img_utility");
+                $photoFileName = $savePhotoFileService->photoFileSave($product_id,
+                    $this->container, $photoFile);
+
+                $oldFileName = $photo->getFileName();
+                $oldFile = $this->get("kernel")->getRootDir() . "/../web/photos/" . $oldFileName;
+
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
                 }
 
-                $fileExt = $photoFile->getClientOriginalExtension();
-                if ($fileExt !== "jpg" and $fileExt !== "png" and $fileExt !== "gif" and $fileExt !== "jpeg") {
-                    throw new InvalidArgumentException("Extension is blocked!");
-                }
+                $photo->setFileName($photoFileName);
 
-                $photoFileName = $productPhoto->getFileName();
-                $photoDirPath = $this->get("kernel")->getRootDir() . "/../web/photos/";
-
-                $photoFile->move($photoDirPath, $photoFileName);
-
-                $productPhoto->setFileName($photoFileName);
             }
-            $manager->persist($productPhoto);
+
+            $manager->persist($photo);
             $manager->flush();
 
-            return $this->redirectToRoute("admin.product.list");
+            return $this->redirectToRoute("admin.product_photo_list", [
+                "idProduct" => $product_id
+            ]);
         }
 
-
         return [
-            "myshopbundle_productphoto[photoFile]"=>$productPhoto->getFileName(),
             "form" => $form->createView(),
-            "photo" => $productPhoto,
-            "request" => $request
+            "photo" => $photo
         ];
+    }
+
+    public function deleteAction($idPhoto, Request $request)
+    {
+
+        $photo = $this->getDoctrine()->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
+        $manager = $this->getDoctrine()->getManager();
+
+        $photoDirPath = $this->get("kernel")->getRootDir() . "/../web/photos/";
+        $fileName = $photoDirPath . $photo->getFileName();
+
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
+
+        $manager->remove($photo);
+        $manager->flush();
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
+    public function mainPhotoAction($product_id, $photo_id)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $product = $this->getDoctrine()->getRepository("MyShopBundle:Product")->find($product_id);
+        $photo = $this->getDoctrine()->getRepository("MyShopBundle:ProductPhoto")->find($photo_id);
+
+        $imageUtility = $this->get("admin.img_utility");
+        try {
+            $photoFileName = $imageUtility->setMainProductPhoto($product, $photo, $this->container);
+        } catch (\Exception $exception) {
+            die("Something wrong with Main photo set!");
+        }
+        $product->setMainPhoto($photoFileName);
+
+        $manager->persist($product);
+        $manager->flush();
+
+        return $this->redirectToRoute("admin.product_photo_list", [
+            "idProduct" => $product_id
+        ]);
     }
 
 }

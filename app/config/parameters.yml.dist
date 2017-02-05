@@ -17,3 +17,19 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    upload_image_type_list:
+            -
+                - jpeg
+                - image/jpeg
+            -
+                - jpg
+                - image/jpg
+            -
+                - gif
+                - image/gif
+            -
+                - png
+                - image/png
+    main_product_photo_height: 300
+    main_product_photo_width: 400

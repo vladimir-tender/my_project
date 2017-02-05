@@ -22,6 +22,7 @@ class ProductPhotoType extends AbstractType
             ])
             ->add('photoFile', FileType::class, [
                 "label" => "Фото",
+                "required" => false,
                 "mapped" => false
             ])
         ;
