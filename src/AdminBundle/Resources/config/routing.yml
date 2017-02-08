@@ -58,7 +58,7 @@ admin.product_photo_list:
 
 admin.category.list:
     path:   /category/list
-    defaults: { _controller: AdminBundle:Category:categorylist}
+    defaults: { _controller: AdminBundle:Category:categorycontrollist}
 
 admin.category.edit:
     path:   /category/{category_id}/edit

@@ -24,18 +24,25 @@ class Category
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", nullable=true, name="id_parent")
-     */
-    private $idParent;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true, name="category")
      */
     private $category;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="MyShopBundle\Entity\Category", inversedBy="childrenCategories")
+     * @ORM\JoinColumn(name="idparent", referencedColumnName="id")
+     */
+    private $idparent;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="MyShopBundle\Entity\Category", mappedBy="idparent")
+     */
+    private $childrenCategories;
 
 /////////////////////////////////////////////////////////
     /**
@@ -48,13 +55,6 @@ class Category
     public function __construct()
     {
         $this->productList = new ArrayCollection();
-    }
-
-    public function addProduct(Product $product)
-    {
-        /** @var Product $product */
-        $product->setCategory($this);
-        $this->productList[] = $product;
     }
 
     /**
@@ -86,13 +86,13 @@ class Category
     /**
      * Set idParent
      *
-     * @param integer $idParent
+     * @param integer $id_parent
      *
      * @return Category
      */
-    public function setIdParent($idParent)
+    public function setIdParent($idparent)
     {
-        $this->idParent = $idParent;
+        $this->idparent = $idparent;
 
         return $this;
     }
@@ -104,7 +104,7 @@ class Category
      */
     public function getIdParent()
     {
-        return $this->idParent;
+        return $this->idparent;
     }
 
     /**
@@ -130,5 +130,62 @@ class Category
     {
         return $this->category;
     }
-}
 
+    /**
+     * Add childrenCategory
+     *
+     * @param \MyShopBundle\Entity\Category $childrenCategory
+     *
+     * @return Category
+     */
+    public function addChildrenCategory(\MyShopBundle\Entity\Category $childrenCategory)
+    {
+        $this->childrenCategories[] = $childrenCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove childrenCategory
+     *
+     * @param \MyShopBundle\Entity\Category $childrenCategory
+     */
+    public function removeChildrenCategory(\MyShopBundle\Entity\Category $childrenCategory)
+    {
+        $this->childrenCategories->removeElement($childrenCategory);
+    }
+
+    /**
+     * Get childrenCategories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildrenCategories()
+    {
+        return $this->childrenCategories;
+    }
+
+    /**
+     * Add productList
+     *
+     * @param \MyShopBundle\Entity\Product $productList
+     *
+     * @return Category
+     */
+    public function addProductList(\MyShopBundle\Entity\Product $productList)
+    {
+        $this->productList[] = $productList;
+
+        return $this;
+    }
+
+    /**
+     * Remove productList
+     *
+     * @param \MyShopBundle\Entity\Product $productList
+     */
+    public function removeProductList(\MyShopBundle\Entity\Product $productList)
+    {
+        $this->productList->removeElement($productList);
+    }
+}

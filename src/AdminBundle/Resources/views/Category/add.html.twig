@@ -2,7 +2,7 @@
 
 {% block body %}
     <h2>Добавление категории</h2>
-    <form action="{{ path("admin.category.add") }}" method="POST">
+    <form method="POST" action="{{ path("admin.category.add") }}" >
         {{ form_widget(form) }}
         <input type="submit" value="Сохранить">
     </form>

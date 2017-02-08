@@ -2,13 +2,14 @@
 
 namespace MyShopBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryType extends AbstractType
+class CategoryEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,12 +19,7 @@ class CategoryType extends AbstractType
         //var_dump($options['data']);
         $builder
             ->add('category', TextType::class, [
-                "label" => "Категория",
-            ])
-            ->add('idparent', ChoiceType::class, [
-                "label" => "Родительская категория",
-                "required" => false,
-                "choices" => $options['data']
+                "label" => "Название",
             ])
         ;
     }

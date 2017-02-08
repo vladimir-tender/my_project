@@ -1,0 +1,31 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+{% block body %}
+    <a href="{{ path("admin.category.add") }}">Добавить категорию</a>
+    <table border="1" cellpadding="3" cellspacing="0">
+        <tr><th>#</th><th>Категория</th><th>Подкатегория</th><th></th></tr>
+
+        {% for category in categoryTree %}
+            <tr>
+                {% if category.idparent == null %}
+                    <td>{{ category.id }}</td>
+                    <td><b>{{ category.category }}</b></td>
+                    <td></td>
+                    <td>
+                        <a href="{{ path("admin.category.edit", {category_id: category.id}) }}">Редактировать</a>
+                    </td>
+                {% else %}
+                    <td>{{ category.id }}</td>
+                    <td>&nbsp;&nbsp;{{ category.idparent.category }}</td>
+                    <td>{{ category.category }}</td>
+                    <td>
+                        <a href="{{ path("admin.category.edit", {category_id: category.id}) }}">Редактировать</a>
+                        <a href="{{ path("admin.category.delete", {category_id: category.id}) }}">Удалить</a>
+                    </td>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

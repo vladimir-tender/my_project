@@ -2,9 +2,23 @@
 
 
 {% block body %}
-    <ul>
-    {% for cat in categoryList %}
-        <li><a href='{{ path("admin.product.listbycategory", {id_category:cat.id}) }}'>{{ cat.category() }}</a></li>
-    {% endfor %}
-    </ul>
+    <a href="{{ path("admin.category.add") }}">Добавить категорию</a>
+
+    <ol>
+        {% for cat in categoryTree %}
+            {% if cat.idparent is defined %}
+                <li><a href='{{ path("admin.product.listbycategory", {id_category:cat.id}) }}'>{{ cat.category() }}</a>
+                </li>
+            {% else %}
+
+                <ul>
+                {% for subcat in cat %}
+                    <li><a href='{{ path("admin.product.listbycategory", {id_category:subcat.id}) }}'>{{ subcat.category() }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </ol>
+
 {% endblock %}

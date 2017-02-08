@@ -1,7 +1,3 @@
 my_shop_create_product:
-    path:     /create/
-    defaults: { _controller: MyShopBundle:Default:createproduct}
-
-my_shop_homepage:
-    path:     /{firstName}
-    defaults: { _controller: MyShopBundle:Default:index, firstName: "anonymous"}
+    path:     /
+    defaults: { _controller: MyShopBundle:Default:index}

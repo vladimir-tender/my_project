@@ -24,18 +24,21 @@ class ProductController extends Controller
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
 
-        if($request->isMethod("POST"))
-        {
+        if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($product);
             $manager->flush();
+
+            return $this->redirectToRoute("admin.product.list");
         }
 
         return [
             "form" => $form->createView()
         ];
+
+
     }
 
     /**
@@ -43,9 +46,16 @@ class ProductController extends Controller
      */
     public function categoryListAction()
     {
-        $categoryList = $this->getDoctrine()->getRepository("MyShopBundle:Category")->findAll();
+        $categoryRepository = $this->getDoctrine()->getRepository("MyShopBundle:Category");
 
-        return ["categoryList" => $categoryList];
+        $categoryUtility = $this->get("admin.cat_utility");
+        try {
+            $categoryTree = $categoryUtility->getCategoryListTree($categoryRepository);
+        } catch (\Exception $exception) {
+            die("Something wrong with Category method getCategoryTree. " . $exception);
+        }
+
+        return ["categoryTree" => $categoryTree];
     }
 
     /**
@@ -92,17 +102,15 @@ class ProductController extends Controller
 
         $form = $this->createForm(ProductType::class, $product);
 
-        if ($request->isMethod("POST"))
-        {
+        if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
-            if ($form->isSubmitted())
-            {
-               $manager = $this->getDoctrine()->getManager();
-               $manager->persist($product);
-               $manager->flush();
+            if ($form->isSubmitted()) {
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($product);
+                $manager->flush();
 
-               return $this->redirectToRoute("admin.product.list");
+                return $this->redirectToRoute("admin.product.list");
             }
         }
 

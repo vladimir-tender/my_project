@@ -3,17 +3,13 @@
 namespace AdminBundle\Controller;
 
 use MyShopBundle\Entity\ProductPhoto;
+use MyShopBundle\Form\ProductPhotoEditType;
 use MyShopBundle\Form\ProductPhotoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-
-/**
- * @property  ContainerInterface $container
- */
 class ProductPhotoController extends Controller
 {
 
@@ -82,7 +78,7 @@ class ProductPhotoController extends Controller
         $photo = $manager->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
         $product_id = $photo->getProduct()->getId();
 
-        $form = $this->createForm(ProductPhotoType::class, $photo);
+        $form = $this->createForm(ProductPhotoEditType::class, $photo);
 
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);

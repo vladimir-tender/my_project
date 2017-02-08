@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: hysteria
- * Date: 03.02.17
- * Time: 21:16
- */
 
 namespace AdminBundle\Controller;
 
 
 use MyShopBundle\Entity\Category;
+use MyShopBundle\Form\CategoryEditType;
 use MyShopBundle\Form\CategoryType;
+use MyShopBundle\MyShopBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +16,18 @@ class CategoryController extends Controller
     /**
      * @Template()
      */
-    public function categoryListAction()
+    public function categoryControlListAction()
     {
-        $categoryList = $this->getDoctrine()->getRepository("MyShopBundle:Category")->findAll();
+        $categoryRepository = $this->getDoctrine()->getRepository("MyShopBundle:Category");
 
-        return ["categoryList" => $categoryList];
+        $categoryUtility = $this->get("admin.cat_utility");
+        try {
+            $categoryTree = $categoryUtility->getCategoryTree($categoryRepository);
+        } catch (\Exception $exception) {
+            die("Something wrong with Category method getCategoryTree. " . $exception);
+        }
+
+        return ["categoryTree" => $categoryTree];
     }
 
     /**
@@ -33,14 +36,14 @@ class CategoryController extends Controller
     public function editAction(Request $request, $category_id)
     {
         $category = $this->getDoctrine()->getRepository("MyShopBundle:Category")->find($category_id);
-        $form = $this->createForm(CategoryType::class, $category);
 
-        if ($request->isMethod("POST"))
-        {
+
+        $form = $this->createForm(CategoryEditType::class, $category);
+
+        if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
-            if ($form->isSubmitted())
-            {
+            if ($form->isSubmitted()) {
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($category);
                 $manager->flush();
@@ -61,12 +64,29 @@ class CategoryController extends Controller
      */
     public function addAction(Request $request)
     {
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
 
-        if ($request->isMethod("POST"))
-        {
+
+        $categoryRepository = $this->getDoctrine()->getRepository("MyShopBundle:Category");
+        $categoryUtility = $this->get("admin.cat_utility");
+        $categoryChoicesArray = $categoryUtility->getCategoryParentChoicesArray($categoryRepository);
+
+        $form = $this->createForm(CategoryType::class, '', [
+            'data' => $categoryChoicesArray,
+            'data_class' => null
+        ]);
+
+        if ($request->isMethod("POST")) {
+
+            $category = new Category();
+
             $form->handleRequest($request);
+
+            $category->setCategory($form->getData()['category']);
+
+            if (isset($form->getData()['idparent'])) {
+                $parentCategoryId = $categoryRepository->find($form->getData()['idparent']);
+                $category->setIdParent($parentCategoryId);
+            }
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($category);
