@@ -2,6 +2,9 @@
 
 namespace MyShopBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use MyShopBundle\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,16 +18,19 @@ class CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //var_dump($options['data']);
+
         $builder
             ->add('category', TextType::class, [
-                "label" => "Категория",
+                "label" => "Название",
             ])
-            ->add('idparent', ChoiceType::class, [
-                "label" => "Родительская категория",
-                "required" => false,
-                "choices" => $options['data']
-            ])
+            ->add('idparent', EntityType::class, [
+                'class' => 'MyShopBundle:Category',
+                'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('c')
+                    ->where('c.idparent IS NULL')->orderBy('c.category', 'ASC');},
+                'required' => false,
+                'choice_label' => 'category',
+                'label' => 'Родительская категория'
+            ]);
         ;
     }
 

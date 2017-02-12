@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Services\Category;
 
+
 class CategoryUtility
 {
 
@@ -19,7 +20,7 @@ class CategoryUtility
 
 
     public function getCategoryTree($categoryRepository)
-    {
+    {//admin.product.categorylist
         $categoryTree = [];
         $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
@@ -38,7 +39,7 @@ class CategoryUtility
     }
 
     public function getCategoryListTree($categoryRepository)
-    {
+    {//admin.category.list
         $categoryTree = [];
         $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
@@ -56,8 +57,12 @@ class CategoryUtility
         return $categoryTree;
     }
 
+    /**
+     * @param $categoryRepository
+     * @return array
+     */
     public function getCategoryChoicesArray($categoryRepository)
-    {
+    {//unused
         $categoryChoicesArray = [];
         $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
@@ -77,7 +82,7 @@ class CategoryUtility
     }
 
     public function getCategoryParentChoicesArray($categoryRepository)
-    {
+    {//Unused
         $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
         $parentCategories = [];
 

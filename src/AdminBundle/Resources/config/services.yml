@@ -5,5 +5,6 @@ services:
             - "%upload_image_type_list%"
             - "%main_product_photo_height%"
             - "%main_product_photo_width%"
+            - "%image_upload_dir%"
     admin.cat_utility:
             class: AdminBundle\Services\Category\CategoryUtility

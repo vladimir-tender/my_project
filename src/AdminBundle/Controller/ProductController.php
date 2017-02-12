@@ -18,6 +18,8 @@ class ProductController extends Controller
 
     /**
      * @Template()
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAction(Request $request)
     {
@@ -28,6 +30,7 @@ class ProductController extends Controller
             $form->handleRequest($request);
 
             $manager = $this->getDoctrine()->getManager();
+            $product->setStatus(1);
             $manager->persist($product);
             $manager->flush();
 
@@ -37,8 +40,6 @@ class ProductController extends Controller
         return [
             "form" => $form->createView()
         ];
-
-
     }
 
     /**

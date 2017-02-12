@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProductPhotoController extends Controller
 {
-
     /**
      * @Template()
      */
@@ -47,9 +46,8 @@ class ProductPhotoController extends Controller
             $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
 
             $imageUtility = $this->get("admin.img_utility");
-            $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
 
-            $photoFileName = $imageUtility->photoFileSave($product->getId(), $photoDirPrefix, $photoFile);
+            $photoFileName = $imageUtility->photoFileSave($product->getId(), $photoFile);
 
             $photo->setFileName($photoFileName);
             $photo->setProduct($product);
@@ -70,10 +68,12 @@ class ProductPhotoController extends Controller
 
     /**
      * @Template()
+     * @param $idPhoto
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction($idPhoto, Request $request)
     {
-
         $manager = $this->getDoctrine()->getManager();
         $photo = $manager->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
         $product_id = $photo->getProduct()->getId();
@@ -89,20 +89,18 @@ class ProductPhotoController extends Controller
 
                 $photoFile = $request->files->get("myshopbundle_productphoto")["photoFile"];
                 $imageUtility = $this->get("admin.img_utility");
-                $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
+                $photoDirPrefix = $this->getParameter("image_upload_dir");
 
                 $photoFileName = $imageUtility->photoFileSave($product_id,
                     $photoDirPrefix, $photoFile);
 
                 $oldFileName = $photo->getFileName();
-                $oldFile = $this->get("kernel")->getRootDir() . "/../web/photos/" . $oldFileName;
+                $oldFile = $photoDirPrefix . $oldFileName;
 
                 if (file_exists($oldFile)) {
                     unlink($oldFile);
                 }
-
                 $photo->setFileName($photoFileName);
-
             }
 
             $manager->persist($photo);
@@ -125,7 +123,7 @@ class ProductPhotoController extends Controller
         $photo = $this->getDoctrine()->getRepository("MyShopBundle:ProductPhoto")->find($idPhoto);
         $manager = $this->getDoctrine()->getManager();
 
-        $photoDirPath = $this->get("kernel")->getRootDir() . "/../web/photos/";
+        $photoDirPath = $this->getParameter("image_upload_dir");
         $fileName = $photoDirPath . $photo->getFileName();
 
         if (file_exists($fileName)) {
@@ -145,10 +143,9 @@ class ProductPhotoController extends Controller
         $product = $this->getDoctrine()->getRepository("MyShopBundle:Product")->find($product_id);
         $photo = $this->getDoctrine()->getRepository("MyShopBundle:ProductPhoto")->find($photo_id);
 
-        $photoDirPrefix = $this->get("kernel")->getRootDir() . "/../web/photos/";
         $imageUtility = $this->get("admin.img_utility");
         try {
-            $photoFileName = $imageUtility->setMainProductPhoto($product, $photo, $photoDirPrefix);
+            $photoFileName = $imageUtility->setMainProductPhoto($product, $photo);
         } catch (\Exception $exception) {
             die("Something wrong with Main photo set!");
         }

@@ -85,6 +85,14 @@ class Product
      */
     private $main_photo;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true, name="status", options={"default" : 1})
+     */
+    private $status;
+
+
     public function __construct()
     {
         $date = new \DateTime("now");
@@ -322,6 +330,22 @@ class Product
     public function setMainPhoto($main_photo)
     {
         $this->main_photo = $main_photo;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
 

@@ -31,5 +31,6 @@ parameters:
             -
                 - png
                 - image/png
-    main_product_photo_height: 300
-    main_product_photo_width: 400
+    main_product_photo_height: 150
+    main_product_photo_width: 150
+    image_upload_dir: "%kernel.root_dir%/../web/photos/"

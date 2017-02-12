@@ -1,3 +1,4 @@
+{% for message in app.session.flashBag.get('success') %}{{ message }}{% endfor %}
 <!doctype html>
 <html lang="en">
 <head>

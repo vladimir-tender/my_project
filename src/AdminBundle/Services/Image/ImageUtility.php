@@ -13,12 +13,14 @@ class ImageUtility
     private $supportedImgTypeList;
     private $mainProductPhotoHeight;
     private $mainProductPhotoWidth;
+    private $photoDirPrefix;
 
-    public function __construct($imageTypeList, $mainProductPhotoHeight, $mainProductPhotoWidth)
+    public function __construct($imageTypeList, $mainProductPhotoHeight, $mainProductPhotoWidth, $photoDirPrefix)
     {
         $this->supportedImgTypeList = $imageTypeList;
         $this->mainProductPhotoHeight = $mainProductPhotoHeight;
         $this->mainProductPhotoWidth = $mainProductPhotoWidth;
+        $this->photoDirPrefix = $photoDirPrefix;
     }
 
     public function checkImgType(UploadedFile $photoFile)
@@ -48,7 +50,7 @@ class ImageUtility
         return true;
     }
 
-    public function photoFileSave($product_id, $photoDirPrefix, UploadedFile $photoFile)
+    public function photoFileSave($product_id, UploadedFile $photoFile)
     {
         try{
             $this->checkImgType($photoFile);
@@ -59,22 +61,22 @@ class ImageUtility
         $photoFileName = $product_id . "_" . time() . "." . $photoFile->getClientOriginalExtension();
 
 
-        $photoFile->move($photoDirPrefix, $photoFileName);
+        $photoFile->move($this->photoDirPrefix, $photoFileName);
 
         return $photoFileName;
     }
 
-    public function setMainProductPhoto(Product $product, ProductPhoto $photo, $photoDirPrefix)
+    public function setMainProductPhoto(Product $product, ProductPhoto $photo)
     {
         $photoFileName = $photo->getFileName();
 
         $fileNamePrefix = "main__";
-        $photoFullName =  $photoDirPrefix . $photoFileName;
+        $photoFullName =  $this->photoDirPrefix . $photoFileName;
 
         $oldMainPhoto = $product->getMainPhoto();
 
         if ($oldMainPhoto !== null) {
-            $oldMainPhotoFull = $photoDirPrefix . $oldMainPhoto;
+            $oldMainPhotoFull = $this->photoDirPrefix . $oldMainPhoto;
 
             if (file_exists($oldMainPhotoFull)) {
                 unlink($oldMainPhotoFull);
@@ -82,9 +84,10 @@ class ImageUtility
         }
 
         $newMainPhoto = new ImageResize($photoFullName);
-        $newMainPhoto->resizeToBestFit($this->mainProductPhotoWidth, $this->mainProductPhotoHeight);
+        //$newMainPhoto->resizeToBestFit($this->mainProductPhotoWidth, $this->mainProductPhotoHeight);
+        $newMainPhoto->resizeToHeight($this->mainProductPhotoHeight);
 
-        $newMainPhotoFullName = $photoDirPrefix . $fileNamePrefix . $photoFileName;
+        $newMainPhotoFullName = $this->photoDirPrefix . $fileNamePrefix . $photoFileName;
         $newMainPhoto->save($newMainPhotoFullName);
 
         return $newMainPhotoName = $fileNamePrefix . $photoFileName;

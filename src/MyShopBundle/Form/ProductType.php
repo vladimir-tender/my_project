@@ -2,6 +2,9 @@
 
 namespace MyShopBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use MyShopBundle\Entity\Category;
+use MyShopBundle\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,9 +23,21 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('category', EntityType::class, [
-                "class" => "MyShopBundle:Category",
+                'class' => "MyShopBundle:Category",
+                'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('c')
+                    ->where('c.idparent IS NOT NULL')->orderBy('c.category', 'ASC');},
                 "choice_label" => "category",
-                "label" => "Категория"
+                "label" => "Категория",
+                'group_by' => function($val, $key, $index) {
+                    /**
+                     * @var Category $val
+                     */
+                    if ($val->getIdparent() != null) {
+                        return $val->getIdparent()->getCategory();
+                    } else {
+                        return 'this option mustnt return';
+                    }
+                }
             ])
             ->add('productname', TextType::class,  [
                 'label' => "Модель товара"
