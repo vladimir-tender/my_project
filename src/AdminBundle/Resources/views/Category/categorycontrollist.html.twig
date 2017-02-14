@@ -9,19 +9,22 @@
             <tr>
                 {% if category.idparent == null %}
                     <td>{{ category.id }}</td>
-                    <td><b>{{ category.category }}</b></td>
+                    <td align="center"><i><b>{{ category.category }}</b></i></td>
                     <td></td>
                     <td>
                         <a href="{{ path("admin.category.edit", {category_id: category.id}) }}">Редактировать</a>
                     </td>
                 {% else %}
                     <td>{{ category.id }}</td>
-                    <td>&nbsp;&nbsp;{{ category.idparent.category }}</td>
-                    <td>{{ category.category }}</td>
+                    <td>&nbsp;&nbsp;{#{{ category.idparent.category }}#}</td>
+                    <td>{{ category.category }} <b>({{ category.productList | length }})</b></td>
                     <td>
                         <a href="{{ path("admin.category.edit", {category_id: category.id}) }}">Редактировать</a>
+                        {% if category.productList | length == 0 %}
                         <a href="{{ path("admin.category.delete", {category_id: category.id}) }}">Удалить</a>
+                        {% endif %}
                     </td>
+
                 {% endif %}
 
             </tr>

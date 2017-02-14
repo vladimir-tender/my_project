@@ -1,0 +1,41 @@
+<div class="menu">
+    <ul id="dc_mega-menu-orange" class="dc_mm-orange">
+        <li><a href="{{ path("my_shop.index") }}">Home</a></li>
+        <li><a href="products.html">Products</a>
+            <ul>
+                {% block categoryMenu %}
+                    {% for cat in categoryList %}
+                        <li><a href="products.html">{{ cat.category }}</a>
+                            <ul>
+                                {% for subcat in cat.getChildrenCategories() %}
+                                    <li><a href="preview-2.html">{{ subcat.category }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                {% endblock %}
+
+            </ul>
+        </li>
+        <li><a href="products.html">Top Brands</a>
+            <ul>
+                <li><a href="products.html">Brand Name 1</a></li>
+                <li><a href="products.html">Brand Name 2</a></li>
+                <li><a href="products.html">Brand Name 3</a></li>
+                <li><a href="#">Brand Name 4</a></li>
+                <li><a href="#">Brand Name 5</a></li>
+                <li><a href="#">Brand Name 6</a></li>
+                <li><a href="#">Brand Name 7</a></li>
+                <li><a href="#">Brand Name 8</a></li>
+                <li><a href="#">Brand Name 9</a></li>
+                <li><a href="#">Brand Name 10</a></li>
+            </ul>
+        </li>
+
+        <li><a href="about.html">About</a></li>
+        <li><a href="#">Delivery</a></li>
+        <li><a href="faq.html">FAQS</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <div class="clear"></div>
+    </ul>
+</div>

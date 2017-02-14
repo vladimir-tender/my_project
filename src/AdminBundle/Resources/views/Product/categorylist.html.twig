@@ -12,10 +12,12 @@
             {% else %}
 
                 <ul>
-                {% for subcat in cat %}
-                    <li><a href='{{ path("admin.product.listbycategory", {id_category:subcat.id}) }}'>{{ subcat.category() }}</a>
-                    </li>
-                {% endfor %}
+                    {% for subcat in cat %}
+                        <li>
+                            <a href='{{ path("admin.product.listbycategory", {id_category:subcat.id}) }}'>{{ subcat.category() }}
+                                /{{ subcat.productList | length }}/</a>
+                        </li>
+                    {% endfor %}
                 </ul>
             {% endif %}
         {% endfor %}

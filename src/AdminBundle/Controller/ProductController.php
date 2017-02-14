@@ -34,6 +34,7 @@ class ProductController extends Controller
             $manager->persist($product);
             $manager->flush();
 
+            $this->addFlash('success', 'Товар успешно добавлен');
             return $this->redirectToRoute("admin.product.list");
         }
 
@@ -91,6 +92,7 @@ class ProductController extends Controller
         $manager->remove($product);
         $manager->flush();
 
+        $this->addFlash('success', 'Товар удален');
         return $this->redirectToRoute("admin.product.list");
     }
 
@@ -107,11 +109,16 @@ class ProductController extends Controller
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) {
+                $cat_id = $product->getCategory()->getId();
+                //var_dump($cat_id);
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($product);
                 $manager->flush();
 
-                return $this->redirectToRoute("admin.product.list");
+                $this->addFlash("success", "Изменения сохранены");
+                return $this->redirectToRoute("admin.product.listbycategory", [
+                    "id_category" => $cat_id
+                ]);
             }
         }
 
@@ -119,6 +126,26 @@ class ProductController extends Controller
             "form" => $form->createView(),
             "product" => $product
         ];
+    }
+
+    public function changeStatusAction(Request $request, $id)
+    {
+        $doctrine = $this->getDoctrine();
+        $manager = $doctrine->getManager();
+        $product = $doctrine->getRepository("MyShopBundle:Product")->find($id);
+
+        if ($product->getStatus() == 1) {
+            $new_status = 0;
+        } else {
+            $new_status = 1;
+        }
+
+        $product->setStatus($new_status);
+        $manager->persist($product);
+        $manager->flush();
+
+        $this->addFlash("success", "Статус товара " . $product->getProductname() . " изменен");
+        return $this->redirect($request->headers->get('referer'));
     }
 
 }

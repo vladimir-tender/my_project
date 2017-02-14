@@ -1,18 +1,47 @@
 {% extends "MyShopBundle::layout.html.twig" %}
 {#Ctrl + Space#}
-{% block categoryMenu %}
-    {% for cat in categoryList %}
-        <li><a href="products.html">{{ cat.category }}</a>
-            <ul>
-                {% for subcat in cat.getChildrenCategories() %}
-                    <li><a href="preview-2.html">{{ subcat.category }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-{% endblock %}
 
 {% block productList %}
+    <div class="content">
+    <div class="content_top">
+        <div class="heading">
+            <h3>Feature Products</h3>
+        </div>
+        <div>
+            <br><br>
+            Sort by:
+            <select>
+                <option>Lowest Price</option>
+                <option>Highest Price</option>
+                <option>Lowest Price</option>
+                <option>Lowest Price</option>
+                <option>Lowest Price</option>
+                <option>In Stock</option>
+            </select>
+            <br>
+            Show:
+            <select>
+                <option>4</option>
+                <option>8</option>
+                <option>12</option>
+                <option>16</option>
+                <option>20</option>
+                <option>In Stock</option>
+            </select>
+
+        </div>
+        <div class="page-no">
+            <p>Result Pages:
+            <ul>
+                <li><a href="#">1</a></li>
+                <li class="active"><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li>[<a href="#"> Next>>></a>]</li>
+            </ul>
+            </p>
+        </div>
+        <div class="clear"></div>
+    </div>
     {% set iterator = 0 %}
     {% for product in productList %}
         {% if iterator == 0 %}

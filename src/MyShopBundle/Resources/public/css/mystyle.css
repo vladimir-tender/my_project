@@ -1,0 +1,19 @@
+td.td-status{
+    text-align: center;
+}
+a.no-class{
+    text-decoration: none;
+}
+span.status_active {
+    color: seashell;
+    background: green;
+}
+
+span.status_inactive{
+    color: gainsboro;
+    background: red;
+}
+
+.login_panel {
+    margin-right: 1%;
+}

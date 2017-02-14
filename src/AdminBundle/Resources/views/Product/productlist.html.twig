@@ -5,24 +5,33 @@
 
     <table border="1">
         <tr>
-            <td>Модель</td>
-            <td>Категория</td>
-            <td>Цена</td>
-            <td></td>
+            <th>Модель</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Статус</th>
+            <th></th>
         </tr>
         {% for product in productList %}
             <tr>
                 <td>{{ product.productname() }}</td>
                 <td>{{ product.getCategory().getCategory() }}</td>
                 <td>{{ product.getPrice() }}</td>
-                <td><a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a>
-                    <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a>
-                    <a href="{{ path("admin.product_delete", {id: product.id}) }}">Удалить</a>
+                <td class="td-status">
+                    <a class="no-class" href="{{ path("admin.product_status", {id: product.Id}) }}">
+                        {% if product.status == 1 %}
+                            <span class="status_active">Активен</span>
+                        {% else %}
+                            <span class="status_inactive">Не активен</span>
+                        {% endif %}
+                    </a>
                 </td>
-                {#<td>
-                  <a href="{{ path("my_shop.admin.product_delete", {id:product.id}) }}">Удалить</a><br/>
-                   <a href="{{ path("my_shop_admin.product_edit", {id:product.id}) }}">Редактирование</a>
-                </td>#}
+                <td>
+                    <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a><br>
+                    <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a><br>
+                    {% if product.status == 0 %}
+                        <a href="{{ path("admin.product_delete", {id: product.id}) }}">Удалить</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </table>

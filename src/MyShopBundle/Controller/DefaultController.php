@@ -25,4 +25,22 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Template()
+     */
+    public function loginAction()
+    {
+
+    }
+
+    public function menuRenderAction()
+    {
+        $categoryList = $this->getDoctrine()->getRepository("MyShopBundle:Category")
+            ->findBy(["idparent" => null], ["category" => "ASC"]);
+        return $this->render("@MyShop/Default/menu.html.twig", [
+            "categoryList" => $categoryList
+        ]);
+
+    }
+
 }

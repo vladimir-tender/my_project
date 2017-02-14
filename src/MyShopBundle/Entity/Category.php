@@ -100,7 +100,7 @@ class Category
     /**
      * Get idParent
      *
-     * @return int
+     * @return mixed
      */
     public function getIdParent()
     {

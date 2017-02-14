@@ -18,6 +18,12 @@ admin.product_delete:
     requirements:
         id: \d+
 
+admin.product_status:
+    path:   /product/{id}/status
+    defaults: { _controller: AdminBundle:Product:changestatus }
+    requirements:
+        id: \d+
+
 admin.product.categorylist:
     path:     /categorylist/
     defaults: { _controller: AdminBundle:Product:categorylist }

@@ -1,3 +1,7 @@
-my_shop_create_product:
+my_shop.index:
     path:     /
     defaults: { _controller: MyShopBundle:Default:index}
+
+my_shop.login:
+    path:     /login
+    defaults: { _controller: MyShopBundle:Default:login}

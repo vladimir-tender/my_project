@@ -25,7 +25,7 @@
     <div class="header">
         <div class="header_top">
             <div class="logo">
-                <a href="index.html"><img src="{{ asset("bundles/myshop/images/logo.png") }}" alt=""/></a>
+                <a href="{{ path("my_shop.index") }}"><img src="{{ asset("bundles/myshop/images/logo.png") }}" alt=""/></a>
             </div>
             <div class="header_top_right">
                 <div class="search_box">
@@ -44,193 +44,127 @@
                         </a>
                     </div>
                 </div>
-                <div class="languages" title="language">
-                    <div id="language" class="wrapper-dropdown" tabindex="1">EN
-                        <strong class="opencart"> </strong>
-                        <ul class="dropdown languges">
-                            <li>
-                                <a href="#" title="Français">
+                <div class="cur_lan_log">
+                    <div class="languages" title="language">
+                        <div id="language" class="wrapper-dropdown" tabindex="1">EN
+                            <strong class="opencart"> </strong>
+                            <ul class="dropdown languges">
+                                <li>
+                                    <a href="#" title="Français">
                                     <span><img src="{{ asset("bundles/myshop/images/gb.png") }}" alt="en" width="26"
                                                height="26"></span><span class="lang">English</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Français">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Français">
                                     <span><img src="{{ asset("bundles/myshop/images/au.png") }}" alt="fr" width="26"
                                                height="26"></span><span class="lang">Français</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Español">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Español">
                                     <span><img src="{{ asset("bundles/myshop/images/bm.png") }}" alt="es" width="26"
                                                height="26"></span><span class="lang">Español</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Deutsch">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Deutsch">
                                     <span><img src="{{ asset("bundles/myshop/images/ck.png") }}" alt="de" width="26"
                                                height="26"></span><span class="lang">Deutsch</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="$" title="Russian">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="$" title="Russian">
                                     <span><img src="{{ asset("bundles/myshop/images/cu.png") }}" alt="ru" width="26"
                                                height="26"></span><span class="lang">Russian</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <script type="text/javascript">
-                        function DropDown(el) {
-                            this.dd = el;
-                            this.initEvents();
-                        }
-                        DropDown.prototype = {
-                            initEvents: function () {
-                                var obj = this;
-
-                                obj.dd.on('click', function (event) {
-                                    $(this).toggleClass('active');
-                                    event.stopPropagation();
-                                });
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <script type="text/javascript">
+                            function DropDown(el) {
+                                this.dd = el;
+                                this.initEvents();
                             }
-                        }
+                            DropDown.prototype = {
+                                initEvents: function () {
+                                    var obj = this;
 
-                        $(function () {
+                                    obj.dd.on('click', function (event) {
+                                        $(this).toggleClass('active');
+                                        event.stopPropagation();
+                                    });
+                                }
+                            }
 
-                            var dd = new DropDown($('#language'));
+                            $(function () {
 
-                            $(document).click(function () {
-                                // all dropdowns
-                                $('.wrapper-dropdown').removeClass('active');
+                                var dd = new DropDown($('#language'));
+
+                                $(document).click(function () {
+                                    // all dropdowns
+                                    $('.wrapper-dropdown').removeClass('active');
+                                });
+
                             });
 
-                        });
-
-                    </script>
-                </div>
-                <div class="currency" title="currency">
-                    <div id="currency" class="wrapper-dropdown" tabindex="1">$
-                        <strong class="opencart"> </strong>
-                        <ul class="dropdown">
-                            <li><a href="#"><span>$</span>Dollar</a></li>
-                            <li><a href="#"><span>€</span>Euro</a></li>
-                        </ul>
+                        </script>
                     </div>
-                    <script type="text/javascript">
-                        function DropDown(el) {
-                            this.dd = el;
-                            this.initEvents();
-                        }
-                        DropDown.prototype = {
-                            initEvents: function () {
-                                var obj = this;
-
-                                obj.dd.on('click', function (event) {
-                                    $(this).toggleClass('active');
-                                    event.stopPropagation();
-                                });
+                    <div class="currency" title="currency">
+                        <div id="currency" class="wrapper-dropdown" tabindex="1">$
+                            <strong class="opencart"> </strong>
+                            <ul class="dropdown">
+                                <li><a href="#"><span>$</span>Dollar</a></li>
+                                <li><a href="#"><span>€</span>Euro</a></li>
+                            </ul>
+                        </div>
+                        <script type="text/javascript">
+                            function DropDown(el) {
+                                this.dd = el;
+                                this.initEvents();
                             }
-                        }
+                            DropDown.prototype = {
+                                initEvents: function () {
+                                    var obj = this;
 
-                        $(function () {
+                                    obj.dd.on('click', function (event) {
+                                        $(this).toggleClass('active');
+                                        event.stopPropagation();
+                                    });
+                                }
+                            }
 
-                            var dd = new DropDown($('#currency'));
+                            $(function () {
 
-                            $(document).click(function () {
-                                // all dropdowns
-                                $('.wrapper-dropdown').removeClass('active');
+                                var dd = new DropDown($('#currency'));
+
+                                $(document).click(function () {
+                                    // all dropdowns
+                                    $('.wrapper-dropdown').removeClass('active');
+                                });
+
                             });
 
-                        });
-
-                    </script>
-                </div>
-                <div class="login">
-                    <span><a href="login.html"><img src="{{ asset("bundles/myshop/images/login.png") }}" alt=""
+                        </script>
+                    </div>
+                    <div class="login">
+                    <span><a href="{{ path("my_shop.login") }}"><img src="{{ asset("bundles/myshop/images/login.png") }}" alt=""
                                                     title="login"/></a></span>
+                    </div>
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="clear"></div>
         </div>
-        <div class="menu">
-            <ul id="dc_mega-menu-orange" class="dc_mm-orange">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="products.html">Products</a>
-                    <ul>
-                        {% block categoryMenu %}
-                        {% endblock %}
-
-                    </ul>
-                </li>
-                <li><a href="products.html">Top Brands</a>
-                    <ul>
-                        <li><a href="products.html">Brand Name 1</a></li>
-                        <li><a href="products.html">Brand Name 2</a></li>
-                        <li><a href="products.html">Brand Name 3</a></li>
-                        <li><a href="#">Brand Name 4</a></li>
-                        <li><a href="#">Brand Name 5</a></li>
-                        <li><a href="#">Brand Name 6</a></li>
-                        <li><a href="#">Brand Name 7</a></li>
-                        <li><a href="#">Brand Name 8</a></li>
-                        <li><a href="#">Brand Name 9</a></li>
-                        <li><a href="#">Brand Name 10</a></li>
-                    </ul>
-                </li>
-
-                <li><a href="about.html">About</a></li>
-                <li><a href="#">Delivery</a></li>
-                <li><a href="faq.html">FAQS</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <div class="clear"></div>
-            </ul>
-        </div>
-
+        {{ render(controller("MyShopBundle:Default:menuRender")) }}
         <div class="main">
-            <div class="content">
-                <div class="content_top">
-                    <div class="heading">
-                        <h3>Feature Products</h3>
-                    </div>
-                    <div class="sort">
-                        <p>Sort by:
-                            <select>
-                                <option>Lowest Price</option>
-                                <option>Highest Price</option>
-                                <option>Lowest Price</option>
-                                <option>Lowest Price</option>
-                                <option>Lowest Price</option>
-                                <option>In Stock</option>
-                            </select>
-                        </p>
-                    </div>
-                    <div class="show">
-                        <p>Show:
-                            <select>
-                                <option>4</option>
-                                <option>8</option>
-                                <option>12</option>
-                                <option>16</option>
-                                <option>20</option>
-                                <option>In Stock</option>
-                            </select>
-                        </p>
-                    </div>
-                    <div class="page-no">
-                        <p>Result Pages:
-                        <ul>
-                            <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li>[<a href="#"> Next>>></a>]</li>
-                        </ul>
-                        </p>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+
                 {% block productList %}
                 {% endblock %}
+
+                {% block body %}
+                {% endblock %}
+            {#
                 <div class="content_bottom">
                     <div class="heading">
                         <h3>New Products</h3>
@@ -320,6 +254,7 @@
                         <div class="button"><span><a href="#" class="details">Details</a></span></div>
                     </div>
                 </div>
+             #}
             </div>
         </div>
     </div>
