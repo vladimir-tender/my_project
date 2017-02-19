@@ -23,7 +23,7 @@
                             Нет главного фото
                         {% endif %}
                     </td>
-                    <td>{{ product.productName() }}</td>
+                    <td><a href="{{ path("admin.product.info", {id: product.id}) }}">{{ product.productName() }}</a><br></td>
                     <td>{{ product.getCategory().getCategory() }}</td>
                     <td>{{ product.getPrice() }}</td>
                     <td class="td-status">
@@ -36,8 +36,10 @@
                         </a>
                     </td>
                     <td>
+
                         <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a><br>
                         <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a><br>
+
                         {% if product.status == 0 %}
                             <a href="{{ path("admin.product_delete", {id: product.id}) }}">Удалить</a>
                         {% endif %}

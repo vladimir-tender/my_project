@@ -1,3 +1,7 @@
+login:
+    path: /login
+    defaults: { _controller: AdminBundle:Login:login }
+
 admin_homepage:
     path:     /
     defaults: { _controller: AdminBundle:Default:index }
@@ -9,6 +13,12 @@ admin.product.add:
 admin.product.edit:
     path:     /product/{id}/edit
     defaults: { _controller: AdminBundle:Product:edit}
+    requirements:
+        id: \d+
+
+admin.product.info:
+    path:     /product/{id}/info
+    defaults: { _controller: AdminBundle:Product:productinfo}
     requirements:
         id: \d+
 
@@ -88,3 +98,17 @@ admin.product_photo_set_main:
     requirements:
         product_id: \d+
         photo_id: \d+
+
+admin.user_add:
+    path: /user/add
+    defaults: { _controller: AdminBundle:User:add}
+
+admin.user_edit:
+    path: /user/edit/{id}/
+    defaults: { _controller: AdminBundle:User:edit}
+    requirements:
+        id: \d+
+
+admin.users:
+    path: /user/
+    defaults: { _controller: AdminBundle:User:index}

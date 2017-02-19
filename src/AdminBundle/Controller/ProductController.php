@@ -34,7 +34,6 @@ class ProductController extends Controller
             $manager->persist($product);
             $manager->flush();
 
-            $this->addFlash('success', 'Товар успешно добавлен');
             return $this->redirectToRoute("admin.product.list");
         }
 
@@ -52,7 +51,7 @@ class ProductController extends Controller
 
         $categoryUtility = $this->get("admin.cat_utility");
         try {
-            $categoryTree = $categoryUtility->getCategoryListTree($categoryRepository);
+            $categoryTree = $categoryUtility->getCategoryListTree();
         } catch (\Exception $exception) {
             die("Something wrong with Category method getCategoryTree. " . $exception);
         }
@@ -116,6 +115,22 @@ class ProductController extends Controller
                 $manager->flush();
 
                 $this->addFlash("success", "Изменения сохранены");
+
+                ///mailReport
+                $mailer = $this->get("admin.actions_mailer");
+                //$message_body = "Статус товара #" . $product->getId() . " \"" . $product->getProductname() . "\" изменен. ";
+                $message_body = $this->renderView("AdminBundle:Product:productinfo.html.twig", [
+                    "product" => $product
+                ]);
+                try {
+                    $mailer->sendReportUserAction($message_body);
+                    //$this->addFlash("success", ". Статус товара изменен.");
+                } catch (\Exception $exception) {
+                    $this->addFlash("failed", "Ошибка отправки письма." . $exception);
+                }
+                ///mailReport
+
+
                 return $this->redirectToRoute("admin.product.listbycategory", [
                     "id_category" => $cat_id
                 ]);
@@ -144,8 +159,33 @@ class ProductController extends Controller
         $manager->persist($product);
         $manager->flush();
 
-        $this->addFlash("success", "Статус товара " . $product->getProductname() . " изменен");
+        $this->addFlash("success", "Статус товара " . $product->getProductname() . " изменен.");
+
+        ///mailReport
+        $mailer = $this->get("admin.actions_mailer");
+        $message_body = "Статус товара #" . $product->getId() . " \"" . $product->getProductname() . "\" изменен. ";
+        try {
+            $mailer->sendReportUserAction($message_body);
+            //$this->addFlash("success", ". Статус товара изменен.");
+        } catch (\Exception $exception) {
+            $this->addFlash("failed", "Ошибка отправки письма." . $exception);
+        }
+        ///mailReport
+
+
         return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Template
+     */
+    public function productInfoAction($id)
+    {
+        $product = $this->getDoctrine()->getRepository("MyShopBundle:Product")->find($id);
+
+        return [
+          "product" => $product
+        ];
     }
 
 }

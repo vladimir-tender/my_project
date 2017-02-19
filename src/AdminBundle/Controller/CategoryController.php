@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
         $categoryUtility = $this->get("admin.cat_utility");
         try {
-            $categoryTree = $categoryUtility->getCategoryTree($categoryRepository);
+            $categoryTree = $categoryUtility->getCategoryTree();
         } catch (\Exception $exception) {
             die("Something wrong with Category method getCategoryTree. " . $exception);
         }
@@ -38,7 +38,6 @@ class CategoryController extends Controller
     public function editAction(Request $request, $category_id)
     {
         $category = $this->getDoctrine()->getRepository("MyShopBundle:Category")->find($category_id);
-
 
         $form = $this->createForm(CategoryType::class, $category);
 
@@ -59,6 +58,19 @@ class CategoryController extends Controller
                     $manager->persist($category);
                     $manager->flush();
                     //echo $category->getId()." ".$category->getIdParent()->getId();
+
+                    ///mailReport
+                    $mailer = $this->get("admin.actions_mailer");
+                    $message_body = "Категория #" . $category->getId() . " изменена. ";
+
+                    try {
+                        $mailer->sendReportUserAction($message_body);
+                        $this->addFlash("success", "Категория изменена.");
+                    } catch (\Exception $exception) {
+                        $this->addFlash("failed", "Ошибка отправки письма." . $exception);
+                    }
+                    ///mailReport
+
                     return $this->redirectToRoute("admin.category.list");
                 } else {
                     $this->addFlash('success', 'Выберите другую родительскую категорию');
@@ -79,11 +91,7 @@ class CategoryController extends Controller
      */
     public function addAction(Request $request)
     {
-
         $category = new Category();
-        //$categoryRepository = $this->getDoctrine()->getRepository("MyShopBundle:Category");
-        //$categoryUtility = $this->get("admin.cat_utility");
-        //$categoryChoicesArray = $categoryUtility->getCategoryParentChoicesArray($categoryRepository);
 
         $form = $this->createForm(CategoryType::class, $category);
 
@@ -111,5 +119,17 @@ class CategoryController extends Controller
         $manager->flush();
 
         return $this->redirectToRoute("admin.category.list");
+    }
+
+    /**@Template()*/
+    public function categoriesForTreeJsonAction()
+    {
+        $categoryUtility = $this->get("admin.cat_utility");
+
+        $jsonData = $categoryUtility->getCategoriesForTreeJson();
+
+        return $this->render("@MyShop/Default/categorytree.html.twig", [
+            "categoriesForTreeJson" => $jsonData
+        ]);
     }
 }

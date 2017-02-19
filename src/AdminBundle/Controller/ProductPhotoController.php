@@ -91,8 +91,7 @@ class ProductPhotoController extends Controller
                 $imageUtility = $this->get("admin.img_utility");
                 $photoDirPrefix = $this->getParameter("image_upload_dir");
 
-                $photoFileName = $imageUtility->photoFileSave($product_id,
-                    $photoDirPrefix, $photoFile);
+                $photoFileName = $imageUtility->photoFileSave($product_id, $photoFile);
 
                 $oldFileName = $photo->getFileName();
                 $oldFile = $photoDirPrefix . $oldFileName;

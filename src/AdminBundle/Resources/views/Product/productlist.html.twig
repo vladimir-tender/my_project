@@ -13,7 +13,7 @@
         </tr>
         {% for product in productList %}
             <tr>
-                <td>{{ product.productname() }}</td>
+                <td><a href="{{ path("admin.product.info", {id: product.id}) }}">{{ product.productName() }}</a></td>
                 <td>{{ product.getCategory().getCategory() }}</td>
                 <td>{{ product.getPrice() }}</td>
                 <td class="td-status">

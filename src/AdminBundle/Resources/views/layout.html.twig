@@ -1,4 +1,5 @@
 {% for message in app.session.flashBag.get('success') %}{{ message }}{% endfor %}
+{% for message in app.session.flashBag.get('failed') %}{{ message }}{% endfor %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,13 +8,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="{{ asset("bundles/myshop/css/mystyle.css") }}" rel="stylesheet" type="text/css" media="all"/>
+
     <title>Document</title>
 </head>
 <body>
 
-<table border="1" style="width: 100%">
+<table>
     <tr>
-        <td valign="top" style="width: 400px">
+        <td valign="top"  class="menu-td">
             <ul>
                 <li><a href="{{ path("admin_homepage") }}">Главная</a></li>
                 <li><a href="{{ path("admin.product.list") }}">Все товары</a></li>
@@ -23,6 +25,8 @@
             <ul>
                 <li><a href="{{ path("admin.product.add") }}">Добавить товар</a></li>
                 <li><a href="{{ path("admin.category.list") }}">Категории</a></li>
+                <li><a href="{{ path("admin.users") }}">Пользователи</a></li>
+                <li><a href="{{ path("logout") }}">Выход</a></li>
             </ul>
         </td>
         <td valign="top">

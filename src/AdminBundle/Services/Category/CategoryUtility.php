@@ -3,34 +3,33 @@
 namespace AdminBundle\Services\Category;
 
 
+use Doctrine\ORM\EntityManager;
+
 class CategoryUtility
 {
 
-    private $repository;
+    private $categoryRepository;
 
-    public function setRepository()
+    /**
+     * CategoryUtility constructor.
+     * @param EntityManager $doctrine
+     */
+    public function __construct($doctrine)
     {
-
+        $this->categoryRepository = $doctrine->getRepository("MyShopBundle:Category");
     }
 
-    public function __construct()
-    {
 
-    }
-
-
-    public function getCategoryTree($categoryRepository)
+    public function getCategoryTree()
     {//admin.product.categorylist
         $categoryTree = [];
-        $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
+        $parentCategoriesList = $this->categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
-        foreach ($parentCategoriesList as $parentCategory)
-        {
+        foreach ($parentCategoriesList as $parentCategory) {
             $categoryTree[] = $parentCategory;
-            $subCategoryList = $categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
+            $subCategoryList = $this->categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
 
-            foreach ($subCategoryList as $subCategory)
-            {
+            foreach ($subCategoryList as $subCategory) {
                 $categoryTree[] = $subCategory;
             }
         }
@@ -38,18 +37,16 @@ class CategoryUtility
         return $categoryTree;
     }
 
-    public function getCategoryListTree($categoryRepository)
+    public function getCategoryListTree()
     {//admin.category.list
         $categoryTree = [];
-        $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
+        $parentCategoriesList = $this->categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
-        foreach ($parentCategoriesList as $parentCategory)
-        {
+        foreach ($parentCategoriesList as $parentCategory) {
             $categoryTree[] = $parentCategory;
-            $subCategoryList = $categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
+            $subCategoryList = $this->categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
 
-            foreach ($subCategoryList as $subCategory)
-            {
+            foreach ($subCategoryList as $subCategory) {
                 $categoryTree[$parentCategory->getId()][] = $subCategory;
             }
         }
@@ -61,18 +58,16 @@ class CategoryUtility
      * @param $categoryRepository
      * @return array
      */
-    public function getCategoryChoicesArray($categoryRepository)
+    public function getCategoryChoicesArray()
     {//unused
         $categoryChoicesArray = [];
-        $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
+        $parentCategoriesList = $this->categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
 
-        foreach ($parentCategoriesList as $parentCategory)
-        {
+        foreach ($parentCategoriesList as $parentCategory) {
             //$categoryChoicesArray[$parentCategory->getCategory()][] = $parentCategory->getId();
-            $subCategoryList = $categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
+            $subCategoryList = $this->categoryRepository->findBy(['idparent' => $parentCategory->getId()], ['category' => 'ASC']);
 
-            foreach ($subCategoryList as $subCategory)
-            {
+            foreach ($subCategoryList as $subCategory) {
                 $categoryChoicesArray[$parentCategory->getCategory()][$subCategory->getCategory()] = $subCategory->getId();
             }
         }
@@ -81,9 +76,9 @@ class CategoryUtility
         return $categoryChoicesArray;
     }
 
-    public function getCategoryParentChoicesArray($categoryRepository)
+    public function getCategoryParentChoicesArray()
     {//Unused
-        $parentCategoriesList = $categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
+        $parentCategoriesList = $this->categoryRepository->findBy(['idparent' => null], ['category' => 'ASC']);
         $parentCategories = [];
 
         foreach ($parentCategoriesList as $parentCategory) {
@@ -91,5 +86,21 @@ class CategoryUtility
         }
         //var_dump($parentCategoriesList);
         return $parentCategories;
+    }
+
+    public function getCategoriesForTreeJson()
+    {
+        $categories = $this->categoryRepository->findAll();
+
+        $data = [];
+        foreach ($categories as $category) {
+            $data[] = [
+                "id" => $category->getId(),
+                "parent" => $parent = is_null($category->getIdParent()) ? "#" : $category->getIdParent()->getId(),
+                "text" => $category->getCategory(),
+            ];
+        }
+
+        return json_encode($data);
     }
 }

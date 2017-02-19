@@ -1,0 +1,48 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+{% block body %}
+    <div class="product_info">
+    <h2>{{ product.productname }}</h2>
+    <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a>
+    <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a><br><br>
+    {% if product.mainPhoto is defined %}
+        <img src="/photos/{{ product.mainPhoto }}">
+    {% else %}
+        <h3>Нет главного фото</h3>
+    {% endif %}
+
+    <table class="product-info">
+        {% if product.category.getIdParent() is defined %}
+            <tr>
+                <th>ParentCategory</th>
+                <td>{{ product.category.getIdParent().getCategory() }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Category</th>
+            <td>{{ product.category.category }}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>{{ product.price }} USD</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ product.description }}</td>
+        </tr>
+        <tr>
+            <th>Add Date</th>
+            <td>{{ product.adddate | date("m.d.Y h:m:s") }}</td>
+        </tr>
+    </table>
+
+    {% if product.photos is defined %}
+        <h4>Другие фото</h4>
+        {% for photo in product.photos %}
+            <img src="{{ app.request.getSchemeAndHttpHost() }}/photos/{{ photo.fileName }}" class="product_info_photos">
+        {% endfor %}
+    {% else %}
+        <h4>Нет дополнительных фото</h4>
+    {% endif %}
+    </div>
+{% endblock %}

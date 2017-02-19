@@ -13,25 +13,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('category', TextType::class, [
                 "label" => "Название",
             ])
             ->add('idparent', EntityType::class, [
                 'class' => 'MyShopBundle:Category',
-                'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('c')
-                    ->where('c.idparent IS NULL')->orderBy('c.category', 'ASC');},
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.idparent IS NULL')->orderBy('c.category', 'ASC');
+                },
                 'required' => false,
                 'choice_label' => 'category',
                 'label' => 'Родительская категория'
             ]);
-        ;
     }
 
     /**

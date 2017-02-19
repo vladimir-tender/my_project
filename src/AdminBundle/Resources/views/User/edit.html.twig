@@ -1,0 +1,9 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+{% block body %}
+    <form action="{{ path("admin.user_edit", {id: id}) }}" method="post">
+
+        {{ form_widget(form) }}
+        <input type="submit" value="Add">
+    </form>
+{% endblock %}

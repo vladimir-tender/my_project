@@ -1,19 +1,82 @@
-td.td-status{
+td.menu-td{
+    padding-right:80px;
+}
+a {
+    text-decoration: none;
+    color: #0000F0;
+    padding: 3px;
+    outline: 0;
+}
+
+a:hover {
+    color: #dd4444;
+}
+
+td.td-status {
     text-align: center;
 }
-a.no-class{
+
+a.no-class {
     text-decoration: none;
 }
+
 span.status_active {
     color: seashell;
     background: green;
+    padding: 2px;
 }
 
-span.status_inactive{
+span.status_inactive {
     color: gainsboro;
     background: red;
+    padding: 2px;
 }
 
 .login_panel {
     margin-right: 1%;
+}
+
+form div {
+    width: 450px;
+    display: inline-table;
+}
+
+form div label {
+    width: 190px;
+    margin-right: 10px;
+    float: left;
+}
+
+form div input, form div textarea {
+    float: right;
+    width: 210px;
+}
+
+form div select {
+    float: right;
+    padding: 2px;
+    width: 224px;
+}
+
+form div textarea {
+    width: 220px;
+}
+
+form input[type=submit] {
+    display: block;
+}
+
+table.product-info th{
+    text-align: left;
+    padding-right: 15px;
+}
+table.product-info td{
+    text-align: left;
+}
+
+img.product_info_photos{
+    height: 200px;
+}
+div.product_info{
+    text-align: center;
 }

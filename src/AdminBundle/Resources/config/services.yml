@@ -7,4 +7,13 @@ services:
             - "%main_product_photo_width%"
             - "%image_upload_dir%"
     admin.cat_utility:
-            class: AdminBundle\Services\Category\CategoryUtility
+        class: AdminBundle\Services\Category\CategoryUtility
+        arguments:
+            - "@doctrine.orm.entity_manager"
+    admin.actions_mailer:
+        class: AdminBundle\Services\Mailer\MailerUtility
+        arguments:
+            - "%mailer_user%"
+            - "%mailer_password%"
+            - "@security.token_storage"
+            - "@mailer"

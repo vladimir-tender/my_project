@@ -31,19 +31,16 @@ class ImageUtility
         $mimeTypes = [];
         $fileExts = [];
 
-        foreach ($this->supportedImgTypeList as $imgType)
-        {
+        foreach ($this->supportedImgTypeList as $imgType) {
             $mimeTypes[] = $imgType[1];
             $fileExts[] = $imgType[0];
         }
 
-        if (in_array($clientMimeType, $mimeTypes) == false)
-        {
+        if (in_array($clientMimeType, $mimeTypes) == false) {
             throw new \InvalidArgumentException("Mime type is blocked!");
         }
 
-        if (in_array($clientFileExt, $fileExts) == false)
-        {
+        if (in_array($clientFileExt, $fileExts) == false) {
             throw new \InvalidArgumentException("Extension is blocked");
         }
 
@@ -52,15 +49,13 @@ class ImageUtility
 
     public function photoFileSave($product_id, UploadedFile $photoFile)
     {
-        try{
+        try {
             $this->checkImgType($photoFile);
         } catch (\InvalidArgumentException $ex) {
             die("Image type error!");
         }
 
         $photoFileName = $product_id . "_" . time() . "." . $photoFile->getClientOriginalExtension();
-
-
         $photoFile->move($this->photoDirPrefix, $photoFileName);
 
         return $photoFileName;
@@ -71,7 +66,7 @@ class ImageUtility
         $photoFileName = $photo->getFileName();
 
         $fileNamePrefix = "main__";
-        $photoFullName =  $this->photoDirPrefix . $photoFileName;
+        $photoFullName = $this->photoDirPrefix . $photoFileName;
 
         $oldMainPhoto = $product->getMainPhoto();
 

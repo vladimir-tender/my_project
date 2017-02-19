@@ -17,7 +17,9 @@
                 {% else %}
                     <td>{{ category.id }}</td>
                     <td>&nbsp;&nbsp;{#{{ category.idparent.category }}#}</td>
-                    <td>{{ category.category }} <b>({{ category.productList | length }})</b></td>
+                    <td>
+                        <a href='{{ path("admin.product.listbycategory", {id_category:category.id}) }}'>{{ category.category }}</a>
+                        <b>({{ category.productList | length }})</b></td>
                     <td>
                         <a href="{{ path("admin.category.edit", {category_id: category.id}) }}">Редактировать</a>
                         {% if category.productList | length == 0 %}
