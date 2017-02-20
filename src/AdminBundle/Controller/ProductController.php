@@ -119,7 +119,7 @@ class ProductController extends Controller
                 ///mailReport
                 $mailer = $this->get("admin.actions_mailer");
                 //$message_body = "Статус товара #" . $product->getId() . " \"" . $product->getProductname() . "\" изменен. ";
-                $message_body = $this->renderView("AdminBundle:Product:productinfo.html.twig", [
+                $message_body = $this->renderView("@Admin/MailerForms/productchangereporthtml.twig", [
                     "product" => $product
                 ]);
                 try {

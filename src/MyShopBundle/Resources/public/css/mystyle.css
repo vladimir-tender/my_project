@@ -1,5 +1,9 @@
 td.menu-td{
-    padding-right:80px;
+    padding-right:50px;
+    border-right: 1px solid grey;
+}
+td.body-td{
+    padding-left:50px;
 }
 a {
     text-decoration: none;
@@ -79,4 +83,8 @@ img.product_info_photos{
 }
 div.product_info{
     text-align: center;
+}
+
+table ul li {
+    list-style: none outside none;
 }
