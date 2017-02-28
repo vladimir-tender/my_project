@@ -5,11 +5,12 @@
     <h2>{{ product.productname }}</h2>
     <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a>
     <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a><br><br>
-    {% if product.mainPhoto is defined %}
+    {% if product.mainPhoto is not null %}
         <img src="/photos/{{ product.mainPhoto }}">
-        <img src="{{ absolute_url(asset('photos')) }}/{{  product.mainPhoto }}">
+        {#<img src="{{ absolute_url(asset('photos')) }}/{{  product.mainPhoto }}">#}
     {% else %}
         <h3>Нет главного фото</h3>
+        <img src="{{ asset('photos/no photo/nofoto.png') }}">
     {% endif %}
 
     <table class="product-info">
@@ -37,7 +38,7 @@
         </tr>
     </table>
 
-    {% if product.photos is defined %}
+    {% if product.photos | length > 0 %}
         <h4>Все фото товара</h4>
         {% for photo in product.photos %}
             <img src="{{ app.request.getSchemeAndHttpHost() }}/photos/{{ photo.fileName }}" class="product_info_photos">

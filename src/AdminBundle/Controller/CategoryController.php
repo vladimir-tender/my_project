@@ -64,7 +64,7 @@ class CategoryController extends Controller
                     $message_body = "Категория #" . $category->getId() . " изменена. ";
 
                     try {
-                        $mailer->sendReportUserAction($message_body);
+                        $mailer->sendReportUserAction($message_body, $this->getUser());
                         $this->addFlash("success", "Категория изменена.");
                     } catch (\Exception $exception) {
                         $this->addFlash("failed", "Ошибка отправки письма." . $exception);

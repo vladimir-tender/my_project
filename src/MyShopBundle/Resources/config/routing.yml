@@ -5,3 +5,19 @@ my_shop.index:
 my_shop.login:
     path:     /login
     defaults: { _controller: MyShopBundle:Default:login}
+
+api.rest.getproduct:
+    path:     /api/rest/getproduct/{id}.json
+    defaults: { _controller: MyShopBundle:API/REST/Product:getProduct}
+    requirements:
+        id: \d+
+
+api.rest.getproducts:
+    path:     /api/rest/getproducts/{category_id}.json
+    defaults: { _controller: MyShopBundle:API/REST/Product:getProducts}
+    requirements:
+        category_id: \d+
+
+api.jsonrpc:
+    path:    /api/jsonrpc/
+    defaults: { _controller: MyShopBundle:API/JsonRPC/JsonRpc:index}

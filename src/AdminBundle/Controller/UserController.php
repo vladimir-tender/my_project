@@ -75,7 +75,7 @@ class UserController extends Controller
             $mailer = $this->get("admin.actions_mailer");
             $message_body = "Данные пользователя #" . $user->getId() . " \"" . $user->getUsername() . "\" изменены. ";
             try {
-                $mailer->sendReportUserAction($message_body);
+                $mailer->sendReportUserAction($message_body, $this->getUser());
                 $this->addFlash("success", "Данные пользователя изменены.");
             } catch (\Exception $exception) {
                 $this->addFlash("failed", "Ошибка отправки письма." . $exception);

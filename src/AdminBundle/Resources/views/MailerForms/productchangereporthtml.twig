@@ -6,9 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-
-    </style>
+    <link href="{{ absolute_url("bundles/myshop/css/mystyle.css") }}" rel="stylesheet" type="text/css" media="all"/>
 </head>
 <body>
 
@@ -17,6 +15,7 @@
     {% if product.mainPhoto is defined %}
         {#<img src="/photos/{{ product.mainPhoto }}">#}
         <img src="{{ absolute_url(asset('photos')) }}/{{  product.mainPhoto }}">
+        {#<img src="http://hotline.ua/img/tx/741/7419835.jpg">#}
     {% else %}
         <h3>Нет главного фото</h3>
     {% endif %}

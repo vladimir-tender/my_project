@@ -88,3 +88,18 @@ div.product_info{
 table ul li {
     list-style: none outside none;
 }
+
+div#myshopbundle_product div{
+    border-bottom: 1px dotted #6E6E6E;
+    padding-top:2px;
+}
+
+div#myshopbundle_product div ul{
+    display: flex;
+    float: left;
+    font-size:12px;
+    margin-top: 0;
+    margin-bottom: 1px;
+    padding-left: 5px;
+    color:red;
+}

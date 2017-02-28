@@ -40,7 +40,7 @@ class ProductType extends AbstractType
                 }
             ])
             ->add('productname', TextType::class,  [
-                'label' => "Модель товара"
+                'label' => "Модель товара",
             ])
             ->add('price', NumberType::class, [
                 "label" => 'Цена товара'
@@ -63,7 +63,7 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MyShopBundle\Entity\Product'
+            'data_class' => 'MyShopBundle\Entity\Product',
         ));
     }
 

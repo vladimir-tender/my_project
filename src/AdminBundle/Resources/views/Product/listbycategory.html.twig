@@ -17,10 +17,10 @@
             {% for product in productList %}
                 <tr>
                     <td>
-                        {% if product.mainPhoto is defined %}
+                        {% if product.mainPhoto is not null %}
                             <img src="/photos/{{ product.mainPhoto }}">
                         {% else %}
-                            Нет главного фото
+                            <img src="{{ asset('photos/no photo/nofoto.png') }}">
                         {% endif %}
                     </td>
                     <td><a href="{{ path("admin.product.info", {id: product.id}) }}">{{ product.productName() }}</a><br></td>

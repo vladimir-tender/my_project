@@ -5,6 +5,8 @@ namespace MyShopBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Product
  *
@@ -35,6 +37,14 @@ class Product
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true, name="productname")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $productname;
 

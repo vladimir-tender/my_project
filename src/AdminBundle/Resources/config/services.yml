@@ -15,5 +15,4 @@ services:
         arguments:
             - "%mailer_user%"
             - "%mailer_password%"
-            - "@security.token_storage"
             - "@mailer"

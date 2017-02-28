@@ -29,6 +29,17 @@ class ProductController extends Controller
         if ($request->isMethod("POST")) {
             $form->handleRequest($request);
 
+            $validator = $this->get('validator');
+            $errors = $validator->validate($product);
+            if (count($errors) > 0) {
+
+                return [
+                    "form" => $form->createView()
+                ];
+                //$errorsString = (string) $errors;
+            }
+
+
             $manager = $this->getDoctrine()->getManager();
             $product->setStatus(1);
             $manager->persist($product);
@@ -123,7 +134,7 @@ class ProductController extends Controller
                     "product" => $product
                 ]);
                 try {
-                    $mailer->sendReportUserAction($message_body);
+                    $mailer->sendReportUserAction($message_body, $this->getUser());
                     //$this->addFlash("success", ". Статус товара изменен.");
                 } catch (\Exception $exception) {
                     $this->addFlash("failed", "Ошибка отправки письма." . $exception);
@@ -165,11 +176,12 @@ class ProductController extends Controller
         $mailer = $this->get("admin.actions_mailer");
         $message_body = "Статус товара #" . $product->getId() . " \"" . $product->getProductname() . "\" изменен. ";
         try {
-            $mailer->sendReportUserAction($message_body);
+            $mailer->sendReportUserAction($message_body, $this->getUser());
             //$this->addFlash("success", ". Статус товара изменен.");
-        } catch (\Exception $exception) {
+        } catch (\ErrorException $exception) {
             $this->addFlash("failed", "Ошибка отправки письма." . $exception);
         }
+
         ///mailReport
 
 
@@ -184,7 +196,7 @@ class ProductController extends Controller
         $product = $this->getDoctrine()->getRepository("MyShopBundle:Product")->find($id);
 
         return [
-          "product" => $product
+            "product" => $product
         ];
     }
 
