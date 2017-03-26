@@ -1,5 +1,3 @@
-{% for message in app.session.flashBag.get('success') %}{{ message }}{% endfor %}
-{% for message in app.session.flashBag.get('failed') %}{{ message }}{% endfor %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,33 +5,52 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="{{ asset("bundles/myshop/bootstrap/css/bootstrap.css") }}" rel="stylesheet" type="text/css"
+          media="all"/>
     <link href="{{ asset("bundles/myshop/css/mystyle.css") }}" rel="stylesheet" type="text/css" media="all"/>
+
 
     <title>Document</title>
 </head>
 <body>
 
-<table>
-    <tr>
-        <td valign="top"  class="menu-td">
-            <ul>
-                <li><a href="{{ path("admin_homepage") }}">Главная</a></li>
-                <li><a href="{{ path("admin.product.list") }}">Все товары</a></li>
-                <li><a href="{{ path("admin.product.categorylist") }}">Товары по категориям</a></li>
-            </ul>
 
-            <ul>
-                <li><a href="{{ path("admin.product.add") }}">Добавить товар</a></li>
-                <li><a href="{{ path("admin.category.list") }}">Категории</a></li>
-                <li><a href="{{ path("admin.users") }}">Пользователи</a></li>
-                <li><a href="{{ path("logout") }}">Выход</a></li>
-            </ul>
-        </td>
-        <td valign="top" class="body-td">
-            {% block body %}
-            {% endblock %}
-        </td>
-    </tr>
-</table>
+<div class="row">
+    <div class="col-sm-2">
+
+
+        <div class="list-group">
+            <a href="{{ path("admin_homepage") }}" class="list-group-item">Главная</a>
+            <a href="{{ path("admin.product.list") }}" class="list-group-item">Все товары</a>
+            <a href="{{ path("admin.product.categorylist") }}" class="list-group-item">Товары по категориям</a>
+        </div>
+
+        <div class="list-group">
+
+            <a href="{{ path("admin.product.add") }}" class="list-group-item">Добавить товар</a>
+            <a href="{{ path("admin.category.list") }}" class="list-group-item">Категории</a>
+            <a href="{{ path("admin.users") }}" class="list-group-item">Пользователи</a>
+            <a href="{{ path("admin.page_list") }}" class="list-group-item">Страницы</a>
+            <a href="{{ path("admin.dataloader") }}" class="list-group-item">Экспорт данных</a>
+            <a href="{{ path("logout") }}" class="list-group-item">Выход</a>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        {% for message in app.session.flashBag.get('failed') %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.session.flashBag.get('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% block body %}
+        {% endblock %}</div>
+</div>
+
 </body>
 </html>

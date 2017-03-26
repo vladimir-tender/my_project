@@ -68,10 +68,10 @@ class Category
     /**
      * @param mixed Product
      */
-    public function setProductList(Product $productList)
+/*    public function setProductList(Product $productList)
     {
         $this->productList = $productList;
-    }
+    }*/
 /////////////////////////////////////////////////////////
     /**
      * Get id

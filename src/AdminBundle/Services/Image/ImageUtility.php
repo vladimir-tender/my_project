@@ -73,7 +73,7 @@ class ImageUtility
         if ($oldMainPhoto !== null) {
             $oldMainPhotoFull = $this->photoDirPrefix . $oldMainPhoto;
 
-            if (file_exists($oldMainPhotoFull)) {
+            if (file_exists($oldMainPhotoFull) && $oldMainPhoto != "") {
                 unlink($oldMainPhotoFull);
             }
         }

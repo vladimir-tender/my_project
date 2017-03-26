@@ -24,11 +24,13 @@ class ProductType extends AbstractType
         $builder
             ->add('category', EntityType::class, [
                 'class' => "MyShopBundle:Category",
-                'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('c')
-                    ->where('c.idparent IS NOT NULL')->orderBy('c.category', 'ASC');},
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.idparent IS NOT NULL')->orderBy('c.category', 'ASC');
+                },
                 "choice_label" => "category",
                 "label" => "Категория",
-                'group_by' => function($val, $key, $index) {
+                'group_by' => function ($val, $key, $index) {
                     /**
                      * @var Category $val
                      */
@@ -39,8 +41,8 @@ class ProductType extends AbstractType
                     }
                 }
             ])
-            ->add('productname', TextType::class,  [
-                'label' => "Модель товара",
+            ->add('productname', TextType::class, [
+                "label" => "Модель товара",
             ])
             ->add('price', NumberType::class, [
                 "label" => 'Цена товара'
@@ -53,10 +55,9 @@ class ProductType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => "Описание товара"
-            ])
-        ;
+            ]);
     }
-    
+
     /**
      * {@inheritdoc}
      */

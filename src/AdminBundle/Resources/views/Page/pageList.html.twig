@@ -1,0 +1,27 @@
+{% extends "AdminBundle::layout.html.twig" %}
+
+
+{% block body %}
+    <a href="{{ path("admin.page_add") }}">Добавить страницу</a>
+    <table class="pageList table table-striped">
+        <tr>
+            <th>Заголовок</th>
+            <th>Ключ страницы</th>
+            <th>Дата создания</th>
+            <th>Операции</th>
+        </tr>
+        {% for page in pageList %}
+            <tr>
+                <td>{{ page.title }}</td>
+                <td>{{ page.pageKey }}</td>
+                <td>{{ page.dateCreateAt.format("H:i:s d.m.y") }}</td>
+                <td>
+                    <a href="{{ path('admin.page_view', {id: page.id}) }}">Открыть</a>
+                    <a href="{{ path("admin.page_edit", {id: page.id}) }}">Редактировать</a> /
+                    <a href="{{ path("admin.page_delete", {id: page.id}) }}">Удалить</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

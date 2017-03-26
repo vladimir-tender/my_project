@@ -42,7 +42,7 @@ admin.product.listbycategory:
     path:     /listbycategory/{id_category}/
     defaults: { _controller: AdminBundle:Product:listbycategory}
     requirements:
-            id_category: \d+
+          id_category: \d+
 
 admin.product.list:
     path:     /productlist/
@@ -112,3 +112,33 @@ admin.user_edit:
 admin.users:
     path: /user/
     defaults: { _controller: AdminBundle:User:index}
+
+admin.dataloader:
+    path: /dataloader/
+    defaults: { _controller: AdminBundle:Default:getJsonData}
+
+admin.page_list:
+    path: /page/list/
+    defaults: { _controller: AdminBundle:Page:pageList}
+
+admin.page_add:
+    path: /page/add/
+    defaults: { _controller: AdminBundle:Page:add}
+
+admin.page_edit:
+    path: /page/edit/{id}
+    defaults: { _controller: AdminBundle:Page:edit}
+    requirements:
+        id: \d+
+
+admin.page_view:
+    path: /page/view/{id}
+    defaults: { _controller: AdminBundle:Page:pageView}
+    requirements:
+        id: \d+
+
+admin.page_delete:
+    path: /page/delete/{id}
+    defaults: { _controller: AdminBundle:Page:delete}
+    requirements:
+        id: \d+

@@ -70,7 +70,7 @@ class JsonRpcController extends Controller
                     'price' => $product->getPrice(),
                     'description' => $product->getDescription(),
                     'date' => $product->getAdddate()->format('d.m.Y'),
-                    'main_photo' => $HttpHost . "/photos/" . $product->getMainPhoto()
+                    'mainPhoto' => $HttpHost . "/photos/" . $product->getMainPhoto()
                 ];
             }
         } else {
@@ -91,7 +91,7 @@ class JsonRpcController extends Controller
                 'price' => $product->getPrice(),
                 'description' => $product->getDescription(),
                 'date' => $product->getAdddate()->format('d.m.Y'),
-                'main_photo' => $HttpHost . "/photos/" . $product->getMainPhoto()
+                'mainPhoto' => $HttpHost . "/photos/" . $product->getMainPhoto()
             ];
         } else {
             $productArray = [];

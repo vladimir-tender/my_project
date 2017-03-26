@@ -2,12 +2,14 @@
 
 namespace AdminBundle\Controller;
 
+
 use MyShopBundle\MyShopBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MyShopBundle\Entity\Product;
 use MyShopBundle\Form\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use AdminBundle\Event\ProductEvent;
 
 class ProductController extends Controller
 {
@@ -39,11 +41,13 @@ class ProductController extends Controller
                 //$errorsString = (string) $errors;
             }
 
-
             $manager = $this->getDoctrine()->getManager();
             $product->setStatus(1);
             $manager->persist($product);
             $manager->flush();
+
+            $event = new ProductEvent($product);
+            $this->get("event_dispatcher")->dispatch("product_add_event", $event);
 
             return $this->redirectToRoute("admin.product.list");
         }
@@ -88,11 +92,16 @@ class ProductController extends Controller
     /**
      * @Template()
      */
-    public function productListAction()
+    public function productListAction(Request $request)
     {
-        $productList = $this->getDoctrine()->getRepository("MyShopBundle:Product")->findAll();
+        if (($request->get("page") === null)) {
+            $page = 1;
+        } else {
+            $page = $request->get("page");
+        }
 
-        return ["productList" => $productList];
+        $productListPagination = $this->get("admin.productUtils")->getPaginationProductList($page);
+        return ["productList" => $productListPagination];
     }
 
     public function deleteAction($id)
@@ -124,6 +133,9 @@ class ProductController extends Controller
                 $manager = $this->getDoctrine()->getManager();
                 $manager->persist($product);
                 $manager->flush();
+
+                $event = new ProductEvent($product);
+                $this->get("event_dispatcher")->dispatch("product_edit_event", $event);
 
                 $this->addFlash("success", "Изменения сохранены");
 

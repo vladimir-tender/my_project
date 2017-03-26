@@ -55,7 +55,6 @@ class CategoryUtility
     }
 
     /**
-     * @param $categoryRepository
      * @return array
      */
     public function getCategoryChoicesArray()

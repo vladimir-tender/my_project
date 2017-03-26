@@ -16,3 +16,19 @@ services:
             - "%mailer_user%"
             - "%mailer_password%"
             - "@mailer"
+    admin.data_loader:
+        class: AdminBundle\Services\DataLoad\DataLoad
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+    myshop_admin.product_subscriber:
+        class: AdminBundle\Event\ProductSubscriber
+        tags:
+             - { name: kernel.event_listener, event: product_add_event, method: onProductAddEvent }
+             - { name: kernel.event_listener, event: product_edit_event, method: onProductEditEvent }
+
+    admin.productUtils:
+        class: AdminBundle\Services\Product\ProductUtils
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@knp_paginator"

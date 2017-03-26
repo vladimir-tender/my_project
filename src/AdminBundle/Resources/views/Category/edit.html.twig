@@ -2,9 +2,13 @@
 
 {% block body %}
     <h2>Редактирование категории</h2>
-    <form action="{{ path("admin.category.edit", {category_id: category.id}) }}" method="POST">
+    <form action="{{ path("admin.category.edit", {category_id: category.id}) }}" method="POST" class="form-horizontal">
         {{ form_widget(form) }}
-        <input type="submit" value="Сохранить">
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <input type="submit" class="btn btn-success" value="Сохранить" />
+            </div>
+        </div>
     </form>
 
 {% endblock %}

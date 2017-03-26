@@ -43,4 +43,16 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Template()
+     */
+    public function ownPageAction($pageKey)
+    {
+        $page = $this->getDoctrine()->getRepository("MyShopBundle:Page")->findOneBy(["pageKey" => $pageKey]);
+
+        return [
+            "page" => $page
+        ];
+    }
+
 }

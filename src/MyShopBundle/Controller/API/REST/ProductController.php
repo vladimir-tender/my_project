@@ -22,7 +22,7 @@ class ProductController extends Controller
                 'price' => $product->getPrice(),
                 'description' => $product->getDescription(),
                 'date' => $product->getAdddate()->format('d.m.Y'),
-                'main_photo' => $product->getMainPhoto() != null ?
+                'mainPhoto' => $product->getMainPhoto() != null ?
                     $request->getHttpHost() ."/photos/". $product->getMainPhoto() :
                     ""
             ];
@@ -46,7 +46,7 @@ class ProductController extends Controller
                     'price' => $product->getPrice(),
                     'description' => $product->getDescription(),
                     'date' => $product->getAdddate()->format('d.m.Y'),
-                    'main_photo' => $request->getHttpHost() ."/photos/". $product->getMainPhoto()
+                    'mainPhoto' => $request->getHttpHost() ."/photos/". $product->getMainPhoto()
                 ];
             }
         } else {

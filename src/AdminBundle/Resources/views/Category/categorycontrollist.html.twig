@@ -2,7 +2,7 @@
 
 {% block body %}
     <a href="{{ path("admin.category.add") }}">Добавить категорию</a>
-    <table border="1" cellpadding="3" cellspacing="0">
+    <table class="table table-striped table-bordered">
         <tr><th>#</th><th>Категория</th><th>Подкатегория</th><th></th></tr>
 
         {% for category in categoryTree %}

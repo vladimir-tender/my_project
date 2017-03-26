@@ -145,8 +145,9 @@ class ProductPhotoController extends Controller
         $imageUtility = $this->get("admin.img_utility");
         try {
             $photoFileName = $imageUtility->setMainProductPhoto($product, $photo);
+            $this->addFlash("success", "Главное фото обновлено!");
         } catch (\Exception $exception) {
-            die("Something wrong with Main photo set!");
+            die("Something wrong with Main photo set!".$exception);
         }
         $product->setMainPhoto($photoFileName);
 

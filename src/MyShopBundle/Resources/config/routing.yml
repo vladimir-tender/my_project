@@ -6,6 +6,10 @@ my_shop.login:
     path:     /login
     defaults: { _controller: MyShopBundle:Default:login}
 
+my_shop.page:
+    path: /page/{pageKey}
+    defaults: { _controller: MyShopBundle:Default:ownpage}
+
 api.rest.getproduct:
     path:     /api/rest/getproduct/{id}.json
     defaults: { _controller: MyShopBundle:API/REST/Product:getProduct}

@@ -2,8 +2,9 @@
 {% block body %}
     <a href="{{ path("admin.product.categorylist") }}">Выбор категории</a>
     <a href="{{ path("admin.product.add") }}">Добавить товар</a>
-
-    <table border="1">
+    <br />
+    {{ knp_pagination_render(productList) }}
+    <table class="table table-striped table-bordered">
         <tr>
             <th>Модель</th>
             <th>Категория</th>
@@ -19,14 +20,14 @@
                 <td class="td-status">
                     <a class="no-class" href="{{ path("admin.product_status", {id: product.Id}) }}">
                         {% if product.status == 1 %}
-                            <span class="status_active">Активен</span>
+                            <div class="label label-success label-sm">Активен</div>
                         {% else %}
-                            <span class="status_inactive">Не активен</span>
+                            <div class="label label-danger label-sm">Не активен</div>
                         {% endif %}
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a><br>
+                    <a href="{{ path("admin.product_photo_list", {idProduct: product.id}) }}">Фотографии</a>
                     <a href="{{ path("admin.product.edit", {id: product.id}) }}">Редактировать</a><br>
                     {% if product.status == 0 %}
                         <a href="{{ path("admin.product_delete", {id: product.id}) }}">Удалить</a>
@@ -35,5 +36,6 @@
             </tr>
         {% endfor %}
     </table>
+    {{ knp_pagination_render(productList) }}
 
 {% endblock %}

@@ -5,7 +5,7 @@
     <a href="{{ path("admin.product.add") }}">Добавить товар</a>
 
     {% if productList | length != 0 %}
-        <table border="1">
+        <table class="table table-striped table-bordered">
             <tr>
                 <td></td>
                 <td>Модель</td>
@@ -17,7 +17,7 @@
             {% for product in productList %}
                 <tr>
                     <td>
-                        {% if product.mainPhoto is not null %}
+                        {% if product.mainPhoto is not null and product.mainPhoto %}
                             <img src="/photos/{{ product.mainPhoto }}">
                         {% else %}
                             <img src="{{ asset('photos/no photo/nofoto.png') }}">
@@ -29,9 +29,9 @@
                     <td class="td-status">
                         <a class="no-class" href="{{ path("admin.product_status", {id: product.Id}) }}">
                             {% if product.status == 1 %}
-                                <span class="status_active">Активен</span>
+                                <div class="label label-success label-sm">Активен</div>
                             {% else %}
-                                <span class="status_inactive">Не активен</span>
+                                <div class="label label-danger label-sm">Не активен</div>
                             {% endif %}
                         </a>
                     </td>

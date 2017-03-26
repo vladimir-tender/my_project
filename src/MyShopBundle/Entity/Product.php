@@ -91,9 +91,9 @@ class Product
     private $photos;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, name="main_photo")
+     * @ORM\Column(type="string", length=255, nullable=true, name="mainPhoto")
      */
-    private $main_photo;
+    private $mainPhoto;
 
     /**
      * @var int
@@ -331,15 +331,15 @@ class Product
      */
     public function getMainPhoto()
     {
-        return $this->main_photo;
+        return $this->mainPhoto;
     }
 
     /**
-     * @param string $main_photo
+     * @param string $mainPhoto
      */
-    public function setMainPhoto($main_photo)
+    public function setMainPhoto($mainPhoto)
     {
-        $this->main_photo = $main_photo;
+        $this->mainPhoto = $mainPhoto;
     }
 
     /**
