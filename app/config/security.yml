@@ -8,8 +8,14 @@ security:
             entity:
                 class: MyShopBundle:User
                 property: username
+
+        customer_db_provider:
+            entity:
+                class: MyShopBundle:Customer
+                property: email
     encoders:
         MyshopBundle\Entity\User: bcrypt
+        MyShopBundle\Entity\Customer: bcrypt
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -26,6 +32,16 @@ security:
             logout:
                 path: /logout
                 target: /admin/login
+
+        shop:
+            provider: customer_db_provider
+            anonymous: ~
+            form_login:
+                login_path: my_shop.login
+                check_path: my_shop.auth
+            logout:
+                path: my_shop.logout
+                target: /
             #anonymous: ~
             # activate different ways to authenticate
 
@@ -37,4 +53,5 @@ security:
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

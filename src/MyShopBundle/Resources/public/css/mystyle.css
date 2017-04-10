@@ -1,19 +1,24 @@
-.label-sm{
+.label-sm {
     font-size: 12px;
 }
-.label-md{
+
+.label-md {
     font-size: 16px;
 }
-.label-lg{
+
+.label-lg {
     font-size: 20px;
 }
-td.menu-td{
-    padding-right:50px;
+
+td.menu-td {
+    padding-right: 50px;
     border-right: 1px solid grey;
 }
-td.body-td{
-    padding-left:50px;
+
+td.body-td {
+    padding-left: 50px;
 }
+
 a {
     text-decoration: none;
     color: #0000F0;
@@ -48,6 +53,7 @@ span.status_inactive {
 .login_panel {
     margin-right: 1%;
 }
+
 /*
 
 form div {
