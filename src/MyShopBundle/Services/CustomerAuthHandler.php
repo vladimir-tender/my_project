@@ -51,9 +51,7 @@ class CustomerAuthHandler
 
             if ($form->isSubmitted()) {
                 if ($request->get("reg") == 1) {
-                    //var_dump("reg");
                     $errors = $this->validator->validate($customer);
-                    //var_dump($errors);
                     if (count($errors) > 0) {
                         return $form;
                     } else {

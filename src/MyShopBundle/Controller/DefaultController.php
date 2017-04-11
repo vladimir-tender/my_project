@@ -34,6 +34,12 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        var_dump($user);
+
+
+
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
 
@@ -59,9 +65,24 @@ class DefaultController extends Controller
 
     }
 
-    public function authAction()
+    public function authAction(Request $request)
     {
+        /*$user = $this->get('security.token_storage')->getToken()->getUser();
+        var_dump($user);
+        die();*/
 
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->redirectToRoute("my_shop.login", [
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ]);
     }
 
     public function logoutAction()

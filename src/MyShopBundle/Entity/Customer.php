@@ -264,14 +264,14 @@ class Customer implements UserInterface, \Serializable
     }
 
 
-
     public function serialize()
     {
-        return serialize([
+        $serialized = serialize([
             $this->getId(),
             $this->getUsername(),
             $this->getPassword()
         ]);
+        return $serialized;
     }
 
     public function unserialize($serialized)
@@ -291,7 +291,7 @@ class Customer implements UserInterface, \Serializable
 
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        $this->getEmail();
     }
 
     public function eraseCredentials()

@@ -15,7 +15,7 @@ security:
                 property: email
     encoders:
         MyshopBundle\Entity\User: bcrypt
-        MyShopBundle\Entity\Customer: bcrypt
+        MyshopBundle\Entity\Customer: bcrypt
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -38,7 +38,7 @@ security:
             anonymous: ~
             form_login:
                 login_path: my_shop.login
-                check_path: my_shop.auth
+                check_path: my_shop.login
             logout:
                 path: my_shop.logout
                 target: /
