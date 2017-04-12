@@ -3038,3 +3038,8 @@ div.sign-in {
     font-size: 12px;
     color: red;
 }
+
+div.login_failed{
+    font-size: 14px;
+    color: red;
+}

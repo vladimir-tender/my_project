@@ -6,7 +6,7 @@
             <div class="login_panel">
                 <h3>Existing Customers</h3>
                 <p>Sign in with the form below.</p>
-                <form action="{{ path('my_shop.auth') }}" method="post" id="member">
+                <form action="{{ path('my_shop.login') }}" method="post" id="member">
                     <!--
                      <input name="Domain" type="text" value="Email" class="field" onfocus="this.value = '';"
                             onblur="if (this.value == '') {this.value = 'Username';}">
@@ -14,22 +14,15 @@
                             onblur="if (this.value == '') {this.value = 'Password';}">
                      -->
 
+                    <input type="text" name="_username" placeholder="Email" required="required"
+                           value="{{ lastUsernameLogin }}" autofocus=""/>
+                    <input type="password" name="_password" placeholder="Password" required="required"/>
 
-                    <input type="text" name="_username" placeholder="Email" required="" autofocus=""/>
-                    <input type="password" name="_password" placeholder="Password" required=""/>
-
-                    {% if error is defined %}
-                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
-                    {% if last_username is defined %}
-                        {{ last_username }}
-
-                    {% endif %}
-                    {#
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-                        <a href="{{ path('my_shop.index') }}" class="btn btn-sm btn-warning btn-block">Back</a>
-                        #}
-
+                    {% for message in app.session.flashBag.get('login_failed') %}
+                        <div class="login_failed">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
 
                     <p class="note">If you forgot your password just enter your email and click <a href="#">here</a></p>
                     <div class="buttons">
@@ -49,6 +42,12 @@
                         <tbody>
                         <tr>
                             <td>
+                                {{ form_widget(form.email) }}
+                                {{ form_errors(form.email) }}
+                                
+                                {{ form_widget(form.password) }}
+                            </td>
+                            <td>
                                 {{ form_widget(form.name) }}
                                 {{ form_errors(form.name) }}
 
@@ -61,14 +60,7 @@
                                 {{ form_widget(form.phone) }}
                                 {{ form_errors(form.phone) }}
                             </td>
-                            <td>
-                                {{ form_widget(form.email) }}
-                                {{ form_errors(form.email) }}
-
-                                {{ form_widget(form.password) }}
-
-                                {{ form_row(form._token) }}
-                            </td>
+                            {{ form_row(form._token) }}
                         </tr>
                         </tbody>
                     </table>

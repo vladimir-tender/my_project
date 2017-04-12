@@ -6,13 +6,9 @@ my_shop.login:
     path:     /login
     defaults: { _controller: MyShopBundle:Default:login}
 
-my_shop.auth:
-    path:     /auth
-    defaults: { _controller: MyShopBundle:Default:auth}
 
 my_shop.logout:
-    path:     /logout
-    defaults: { _controller: MyShopBundle:Default:logout}
+    path:     /customer/logout
 
 my_shop.page:
     path: /page/{pageKey}

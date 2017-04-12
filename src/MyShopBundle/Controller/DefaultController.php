@@ -34,9 +34,16 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
+        //$user = $this->getUser();
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        var_dump($user);
+        $authenticationUtils = $this->get('security.authentication_utils');
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsernameLogin = "";
+
+        if (count($error) > 0) {
+            $lastUsernameLogin = $authenticationUtils->getLastUsername();
+            $this->addFlash("login_failed", "Authentication error");
+        }
 
 
 
@@ -54,41 +61,19 @@ class DefaultController extends Controller
         } else {
             //var_dump($auth);
             return [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'lastUsernameLogin' => $lastUsernameLogin
             ];
         }
 
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'lastUsernameLogin' => $lastUsernameLogin
         ];
 
     }
 
-    public function authAction(Request $request)
-    {
-        /*$user = $this->get('security.token_storage')->getToken()->getUser();
-        var_dump($user);
-        die();*/
-
-        $authenticationUtils = $this->get('security.authentication_utils');
-
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->redirectToRoute("my_shop.login", [
-            'last_username' => $lastUsername,
-            'error'         => $error,
-        ]);
-    }
-
-    public function logoutAction()
-    {
-
-    }
 
     public function menuRenderAction()
     {

@@ -287,11 +287,12 @@ class Customer implements UserInterface, \Serializable
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
+        return "";
     }
 
     public function getUsername()
     {
-        $this->getEmail();
+        return $this->getEmail();
     }
 
     public function eraseCredentials()
