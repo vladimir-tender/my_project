@@ -34,11 +34,19 @@ class CustomerAuthHandler
      */
     private $passEncode;
 
-    public function __construct($em, $validator, $passEncode)
+    /**
+     * @var \Swift_Mailer $swiftmailer
+     */
+    private $swiftMailer;
+
+
+    public function __construct($em, $validator, $passEncode, $swiftMailer)
     {
         $this->em = $em;
         $this->validator = $validator;
         $this->passEncode = $passEncode;
+        $this->swiftMailer = $swiftMailer;
+
     }
 
     public function customerActionHandler(Request $request, Form\Form $form, Customer $customer)
@@ -50,27 +58,107 @@ class CustomerAuthHandler
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) {
-                if ($request->get("reg") == 1) {
-                    $errors = $this->validator->validate($customer);
-                    if (count($errors) > 0) {
-                        return $form;
-                    } else {
 
-                        $encoder = $this->passEncode;
-                        $password_hashed = $encoder->encodePassword($customer, $customer->getPassword());
-                        $customer->setPassword($password_hashed);
+                if ($this->checkCustomerExists($customer) === true) {
+                    return 'customerExists';
+                }
 
-                        $em = $this->em;
-                        $em->persist($customer);
-                        $em->flush();
+                $validator = $this->validator;
+                $errors = $validator->validate($customer);
+                $formValid = $form->isValid();
 
-                        return true;
-                    }
+                if (count($errors) > 0 || $formValid === false) {
+                    return $form;
                 } else {
-                    //var_dump("login");
+
+                    $encoder = $this->passEncode;
+                    $password_hashed = $encoder->encodePassword($customer, $customer->getPassword());
+                    $customer->setPassword($password_hashed);
+                    $customer->setStatus(Customer::USER_INACTIVE);
+
+                    $hash = $this->confirmEmail($customer, $request->getSchemeAndHttpHost());
+
+                    $customer->setHash($hash);
+
+                    $em = $this->em;
+                    $em->persist($customer);
+                    try {
+                        $em->flush();
+                        return true;
+                    } catch (\Exception $exception) {
+                        throw new \Exception("Failed to insert INTO DB. Maybe double.");
+                    }
+
                 }
             }
         }
-
     }
+
+
+    public function confirmEmail($customer, $host)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $hash = sha1($customer->getEmail() . time());
+        $url = $host . "/customer/confirm/" . $hash;
+
+        $text = "Dear user! <br> 
+                Thank you for registering at our shop!<br>
+                Before we can activate your account one last step must be taken to complete your registration.<br>
+                Please note - you must complete this last step to become a registered member. You will only need to visit this URL once to activate your account.
+                To complete your registration, please visit this URL: <br>
+                <a href='" . $url . "'>Click here</a>";
+
+        $message = \Swift_Message::newInstance();
+        $message
+            ->setSubject('Confirm user Email')
+            ->setFrom('igorstokolos@gmail.com')
+            ->setTo($customer->getEmail())
+            ->setBody($text, 'text/html');
+
+        try {
+            /**@var \Swift_Message $message */
+            $this->swiftMailer->send($message);
+        } catch (\Exception $exception) {
+            $hash = false;
+        }
+
+        return $hash;
+    }
+
+
+    public function checkCustomerExists($customer)
+    {
+        /**
+         * @var Customer $customer
+         */
+        $customerExists = $this->em->getRepository("MyShopBundle:Customer")->findOneBy(['email' => $customer->getEmail()]);
+
+        if ($customerExists == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function confirmEmailHash($hash)
+    {
+        $customer = $this->em->getRepository("MyShopBundle:Customer")->findOneBy(["hash" => $hash]);
+        if ($customer != null) {
+            $customer->setStatus(Customer::USER_ACTIVE);
+            $this->em->persist($customer);
+            try {
+                $this->em->flush();
+                return true;
+            } catch (\Exception $exception) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+
 }

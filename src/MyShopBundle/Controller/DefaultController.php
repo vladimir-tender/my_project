@@ -26,16 +26,13 @@ class DefaultController extends Controller
             "categoryList" => $categoryList,
             "productList" => $productList
         ];
-
     }
 
     /**
      * @Template()
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
-        //$user = $this->getUser();
-
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsernameLogin = "";
@@ -44,9 +41,17 @@ class DefaultController extends Controller
             $lastUsernameLogin = $authenticationUtils->getLastUsername();
             $this->addFlash("login_failed", "Authentication error");
         }
+        return [
+            'lastlogin' => $lastUsernameLogin,
+        ];
+    }
 
 
-
+    /**
+     * @Template()
+     */
+    public function registrationAction(Request $request)
+    {
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
 
@@ -54,26 +59,24 @@ class DefaultController extends Controller
         $auth = $handler->customerActionHandler($request, $form, $customer);
 
         if ($auth === true) {
-            //var_dump($auth);
-            //var_dump($customer);
             $this->addFlash("success", "User added, please login");
-            $this->redirectToRoute("my_shop.login");
-        } else {
-            //var_dump($auth);
+            return $this->redirectToRoute("my_shop.index");
+        } elseif ($auth === false || $auth === null) {
             return [
-                'form' => $form->createView(),
-                'lastUsernameLogin' => $lastUsernameLogin
+                'form' => $form->createView()
             ];
+        } elseif ($auth == 'customerExists') {
+            $this->addFlash("registration_error", "User with such email Exists");
+            return $this->render("@MyShop/Default/login.html.twig", [
+                'form' => $form->createView()
+            ]);
+        } else {
+            return $this->render("@MyShop/Default/login.html.twig", [
+                'form' => $form->createView()
+            ]);
         }
 
-
-        return [
-            'form' => $form->createView(),
-            'lastUsernameLogin' => $lastUsernameLogin
-        ];
-
     }
-
 
     public function menuRenderAction()
     {
@@ -95,6 +98,18 @@ class DefaultController extends Controller
         return [
             "page" => $page
         ];
+    }
+
+    public function confirmEmailAction($hash)
+    {
+        $handler = $this->get("my_shop.customer.handler.auth");
+        $confirm = $handler->confirmEmailHash($hash);
+        if ($confirm === true) {
+            $this->addFlash("success", "Email confirmed. Please login!");
+        } else {
+            $this->addFlash("success", "Email confirmed failed.");
+        }
+        return $this->redirectToRoute("my_shop.index");
     }
 
 }

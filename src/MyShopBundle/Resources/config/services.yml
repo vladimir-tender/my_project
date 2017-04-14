@@ -5,3 +5,4 @@ services:
                - "@doctrine.orm.entity_manager"
                - "@validator"
                - "@security.password_encoder"
+               - "@mailer"

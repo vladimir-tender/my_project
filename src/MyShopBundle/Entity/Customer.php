@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Customer implements UserInterface, \Serializable
 {
+
+    const USER_ACTIVE = 1;
+    const USER_INACTIVE = 0;
     /**
      * @var int
      *
@@ -83,6 +86,20 @@ class Customer implements UserInterface, \Serializable
      * @ORM\Column(name="phone", type="string", length=255, nullable=true )
      */
     private $phone;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false, name="status")
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hash", type="string", length=255, nullable=true )
+     */
+    private $hash;
 
 
     /**
@@ -298,6 +315,38 @@ class Customer implements UserInterface, \Serializable
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
     }
 
 

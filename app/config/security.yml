@@ -40,8 +40,8 @@ security:
             provider: customer_db_provider
             anonymous: ~
             form_login:
-                login_path: my_shop.login
-                check_path: my_shop.login
+                login_path: /login
+                check_path: /login
             logout:
                 path: /customer/logout
                 target: /

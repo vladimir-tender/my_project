@@ -6,6 +6,13 @@ my_shop.login:
     path:     /login
     defaults: { _controller: MyShopBundle:Default:login}
 
+my_shop.registration:
+    path:     /login/registration
+    defaults: { _controller: MyShopBundle:Default:registration}
+
+my_shop.confirm_email:
+    path:     /customer/confirm/{hash}
+    defaults: { _controller: MyShopBundle:Default:confirmEmail }
 
 my_shop.logout:
     path:     /customer/logout

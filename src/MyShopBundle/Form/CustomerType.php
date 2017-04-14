@@ -29,8 +29,8 @@ class CustomerType extends AbstractType
             ])
             ->add('password',RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => false, 'attr' => ['placeholder' => 'Password']],
-                'second_options' => ['label' => false, 'attr' => ['placeholder' => 'Repeat Password']],
+                'first_options' => ['label' => false, 'attr' => ['placeholder' => 'Password'] ],
+                'second_options' => ['label' => false, 'attr' => ['placeholder' => 'Repeat Password'] ],
                 'invalid_message' => 'Different passwords'
             ])
 

@@ -1,0 +1,26 @@
+<table>
+    <tbody>
+    <tr>
+        <td>
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+
+            {{ form_widget(form.password) }}
+        </td>
+        <td>
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+
+            {{ form_widget(form.city) }}
+            {{ form_errors(form.city) }}
+
+            {{ form_widget(form.address) }}
+            {{ form_errors(form.address) }}
+
+            {{ form_widget(form.phone) }}
+            {{ form_errors(form.phone) }}
+        </td>
+        {{ form_row(form._token) }}
+    </tr>
+    </tbody>
+</table>
