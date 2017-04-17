@@ -1,0 +1,26 @@
+{% extends "MyShopBundle::layout.html.twig" %}
+
+{% block additional_css %}
+    {#
+    <link href="{{ asset('bundles/myshop/bootstrap/css/bootstrap.css') }}"  rel="stylesheet" type="text/css" media="all">
+    #}
+{% endblock %}
+
+{% block body %}
+    <div class="unreset">
+        <h4>Hello {{ app.user.email }}</h4>
+
+        <table>
+            <tr>
+                <td>
+                    <a href="#">Current order</a><br>
+                    <a href="#">Orders</a><br>
+                    <a href="{{ path("my_shop.logout") }}">Exit</a><br>
+                </td>
+                <td>
+                    Current order
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

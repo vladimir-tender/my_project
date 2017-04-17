@@ -1,14 +1,14 @@
 <div class="menu">
     <ul id="dc_mega-menu-orange" class="dc_mm-orange">
         <li><a href="{{ path("my_shop.index") }}">Home</a></li>
-        <li><a href="products.html">Products</a>
+        <li><a href="#">Products</a>
             <ul>
                 {% block categoryMenu %}
                     {% for cat in categoryList %}
-                        <li><a href="products.html">{{ cat.category }}</a>
+                        <li><a href="{{ path("my_shop.by.parent_category", {parent_cat_id: cat.id}) }}">{{ cat.category }}</a>
                             <ul>
                                 {% for subcat in cat.getChildrenCategories() %}
-                                    <li><a href="preview-2.html">{{ subcat.category }}</a></li>
+                                    <li><a href="{{ path("my_shop.by.category", {category_id: subcat.id}) }}">{{ subcat.category }}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>

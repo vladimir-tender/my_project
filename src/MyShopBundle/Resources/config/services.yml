@@ -6,3 +6,7 @@ services:
                - "@validator"
                - "@security.password_encoder"
                - "@mailer"
+    my_shop.customer.handler.actions:
+        class: MyShopBundle\Services\CustomerActionsHandler
+        arguments:
+              - "@doctrine.orm.entity_manager"

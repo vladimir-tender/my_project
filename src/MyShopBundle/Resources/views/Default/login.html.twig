@@ -7,13 +7,6 @@
                 <h3>Existing Customers</h3>
                 <p>Sign in with the form below.</p>
                 <form action="{{ path('my_shop.login') }}" method="post" id="member">
-                    <!--
-                     <input name="Domain" type="text" value="Email" class="field" onfocus="this.value = '';"
-                            onblur="if (this.value == '') {this.value = 'Username';}">
-                     <input name="Domain" type="password" value="Password" class="field" onfocus="this.value = '';"
-                            onblur="if (this.value == '') {this.value = 'Password';}">
-                     -->
-
                     <input type="text" name="_username" placeholder="Email" required="required"
                            value="
                                 {%- if lastlogin is defined -%}

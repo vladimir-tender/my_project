@@ -2,6 +2,18 @@ my_shop.index:
     path:     /
     defaults: { _controller: MyShopBundle:Default:index}
 
+my_shop.by.category:
+    path:     /category/{category_id}
+    defaults: { _controller: MyShopBundle:Default:productsByCategory}
+    requirements:
+        category_id: \d+
+
+my_shop.by.parent_category:
+    path:     /p_category/{parent_cat_id}
+    defaults: { _controller: MyShopBundle:Default:productsByParentCategory}
+    requirements:
+        parent_cat_id: \d+
+
 my_shop.login:
     path:     /login
     defaults: { _controller: MyShopBundle:Default:login}
@@ -20,6 +32,10 @@ my_shop.logout:
 my_shop.page:
     path: /page/{pageKey}
     defaults: { _controller: MyShopBundle:Default:ownpage}
+
+my_shop.customer.main:
+    path: /customer
+    defaults: { _controller: MyShopBundle:Customer:main}
 
 api.rest.getproduct:
     path:     /api/rest/getproduct/{id}.json

@@ -10,9 +10,16 @@ namespace MyShopBundle\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class CustomerController extends Controller
 {
-    //public function regist
+    /**
+     * @Template()
+     */
+    public function mainAction()
+    {
+
+    }
 
 }

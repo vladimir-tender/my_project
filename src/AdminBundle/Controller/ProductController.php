@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 
+use MyShopBundle\Entity\Category;
 use MyShopBundle\MyShopBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use MyShopBundle\Entity\Product;
@@ -79,9 +80,29 @@ class ProductController extends Controller
      */
     public function listByCategoryAction($id_category)
     {
+        $parentCategory = $this->getDoctrine()->getRepository("MyShopBundle:Category")
+            ->findBy(['idparent' => $id_category], ['category' => 'ASC']);
+        $productList = [];
 
-        $category = $this->getDoctrine()->getRepository("MyShopBundle:Category")->find($id_category);
-        $productList = $category->getProductList();
+        if ($parentCategory == null) {
+            $category = $this->getDoctrine()->getRepository("MyShopBundle:Category")->find($id_category);
+            $productList = $category->getProductList();
+
+        } else {
+            foreach ($parentCategory as $category) {
+                $productListArray = $category->getProductList();
+                foreach ($productListArray as $product) {
+                    $productList[] = $product;
+                }
+            }
+            /**
+             * @var Category $parentCategory
+             */
+            $category = $productList[0]->getCategory()->getIdParent()->getCategory();
+
+            //var_dump($productList);
+        }
+
 
         return [
             "productList" => $productList,

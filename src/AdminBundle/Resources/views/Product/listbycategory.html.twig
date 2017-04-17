@@ -1,6 +1,12 @@
 {% extends "AdminBundle::layout.html.twig" %}
 {% block body %}
-    <h2>{{ category.category }}</h2>
+    {% if category.category is defined %}
+        <h2>{{ category.category }}</h2>
+    {% else %}
+        <h2>{{ category }}</h2>
+    {% endif %}
+
+
     <a href="{{ path("admin.product.categorylist") }}">Выбор категории</a>
     <a href="{{ path("admin.product.add") }}">Добавить товар</a>
 
@@ -23,7 +29,8 @@
                             <img src="{{ asset('photos/no photo/nofoto.png') }}">
                         {% endif %}
                     </td>
-                    <td><a href="{{ path("admin.product.info", {id: product.id}) }}">{{ product.productName() }}</a><br></td>
+                    <td><a href="{{ path("admin.product.info", {id: product.id}) }}">{{ product.productName() }}</a><br>
+                    </td>
                     <td>{{ product.getCategory().getCategory() }}</td>
                     <td>{{ product.getPrice() }}</td>
                     <td class="td-status">

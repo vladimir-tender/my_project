@@ -41,6 +41,7 @@ table {
 /* start editing from here */
 a {
     text-decoration: none;
+    outline: none;
 }
 
 .txt-rt {
@@ -269,7 +270,7 @@ body {
 }
 
 .login span a img {
-    padding-top: 8px;
+    margin-top: 8px;
     height: auto;
 }
 

@@ -3,6 +3,7 @@
 namespace MyShopBundle\Controller;
 
 use Ivory\CKEditorBundle\Exception\Exception;
+use MyShopBundle\Entity\Category;
 use MyShopBundle\Entity\Customer;
 use MyShopBundle\Entity\Product;
 use MyShopBundle\Form\CustomerType;
@@ -17,15 +18,41 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $categoryList = $this->getDoctrine()->getRepository("MyShopBundle:Category")
-            ->findBy(["idparent" => null], ["category" => "ASC"]);
-        $productList = $this->getDoctrine()->getRepository("MyShopBundle:Product")
-            ->findBy(["status" => "1"], ["category" => "ASC"]);
+        $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
+
+        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        $productList = $customerActionsHandler->getAllProducts();
 
         return [
             "categoryList" => $categoryList,
             "productList" => $productList
         ];
+    }
+
+    public function productsByCategoryAction($category_id)
+    {
+        $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
+
+        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        $productList = $customerActionsHandler->getProductsByCategory($category_id);
+
+        return $this->render("@MyShop/Default/index.html.twig", [
+            "categoryList" => $categoryList,
+            "productList" => $productList
+        ]);
+    }
+
+    public function productsByParentCategoryAction($parent_cat_id)
+    {
+        $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
+
+        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        $productList = $customerActionsHandler->getProductsByParentCategory($parent_cat_id);
+
+        return $this->render("@MyShop/Default/index.html.twig", [
+            "categoryList" => $categoryList,
+            "productList" => $productList
+        ]);
     }
 
     /**
@@ -105,9 +132,9 @@ class DefaultController extends Controller
         $handler = $this->get("my_shop.customer.handler.auth");
         $confirm = $handler->confirmEmailHash($hash);
         if ($confirm === true) {
-            $this->addFlash("success", "Email confirmed. Please login!");
+            $this->addFlash("success", "Email confirmed . Please login!");
         } else {
-            $this->addFlash("success", "Email confirmed failed.");
+            $this->addFlash("success", "Email confirmed failed . ");
         }
         return $this->redirectToRoute("my_shop.index");
     }

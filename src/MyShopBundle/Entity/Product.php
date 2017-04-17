@@ -102,6 +102,8 @@ class Product
      */
     private $status;
 
+    public $actualPrice;
+
 
     public function __construct()
     {
