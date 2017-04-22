@@ -360,5 +360,13 @@ class Product
         $this->status = $status;
     }
 
+    public function getActualPrice()
+    {
+        if ($this->getDiscount() > 0) {
+            return $this->getPrice() * (100 - $this->getDiscount()) / 100;
+        } else {
+            return $this->getPrice();
+        }
+    }
 
 }

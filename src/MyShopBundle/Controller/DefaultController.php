@@ -20,11 +20,11 @@ class DefaultController extends Controller
     {
         $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
 
-        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
         $productList = $customerActionsHandler->getAllProducts();
 
         return [
-            "categoryList" => $categoryList,
+            //"categoryList" => $categoryList,
             "productList" => $productList
         ];
     }
@@ -33,11 +33,11 @@ class DefaultController extends Controller
     {
         $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
 
-        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
         $productList = $customerActionsHandler->getProductsByCategory($category_id);
 
         return $this->render("@MyShop/Default/index.html.twig", [
-            "categoryList" => $categoryList,
+            //"categoryList" => $categoryList,
             "productList" => $productList
         ]);
     }
@@ -46,11 +46,11 @@ class DefaultController extends Controller
     {
         $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
 
-        $categoryList = $customerActionsHandler->getCategoriesForMenu();
+        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
         $productList = $customerActionsHandler->getProductsByParentCategory($parent_cat_id);
 
         return $this->render("@MyShop/Default/index.html.twig", [
-            "categoryList" => $categoryList,
+            //"categoryList" => $categoryList,
             "productList" => $productList
         ]);
     }
@@ -60,6 +60,10 @@ class DefaultController extends Controller
      */
     public function loginAction()
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute("my_shop.customer.main");
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsernameLogin = "";
@@ -68,6 +72,8 @@ class DefaultController extends Controller
             $lastUsernameLogin = $authenticationUtils->getLastUsername();
             $this->addFlash("login_failed", "Authentication error");
         }
+
+
         return [
             'lastlogin' => $lastUsernameLogin,
         ];

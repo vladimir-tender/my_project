@@ -3033,14 +3033,27 @@ div.sign-in {
     margin-top: 17px;
 }
 
-
-.register_account ul.list-unstyled li  {
+.register_account ul.list-unstyled li {
     padding-bottom: 7px;
     font-size: 12px;
     color: red;
 }
 
-div.login_failed{
+div.login_failed {
     font-size: 14px;
     color: red;
+}
+
+input.product-count {
+    width: 40px;
+    text-align: center;
+}
+
+td.td-basket-list{
+    padding-left: 150px !important;
+}
+
+td.td-basket-list table td{
+    padding: 5px !important;
+
 }

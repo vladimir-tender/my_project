@@ -2,6 +2,7 @@
 
 namespace MyShopBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -100,6 +101,13 @@ class Customer implements UserInterface, \Serializable
      * @ORM\Column(name="hash", type="string", length=255, nullable=true )
      */
     private $hash;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="MyShopBundle\Entity\CustomerOrder", mappedBy="customer")
+     */
+    private $orders;
 
 
     /**

@@ -75,7 +75,7 @@ class CustomerActionsHandler
     }
 
     public function getCategoriesForMenu()
-    {
+    {//now unused
         $categoryList = $this->em->getRepository("MyShopBundle:Category")
             ->findBy(["idparent" => null], ["category" => "ASC"]);
         return $categoryList;

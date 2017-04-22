@@ -38,41 +38,51 @@
                 <li><a href="#">3</a></li>
                 <li>[<a href="#"> Next>>></a>]</li>
             </ul>
-            </p>
+
         </div>
         <div class="clear"></div>
     </div>
     {% set iterator = 0 %}
-    {% for product in productList %}
-        {% if iterator == 0 %}
-            <div class="section group">
-        {% endif %}
-        {% set iterator = iterator + 1 %}
 
-        <div class="grid_1_of_4 images_1_of_4">
-            <img src="/photos/{{ product.mainphoto }}" alt=""/>
-            <h2>{{ product.productname }}</h2>
-            <p>{{ product.description }}</p>
+    {% if productList | length > 0 %}
+
+        {% for product in productList %}
+            {% if iterator == 0 %}
+                <div class="section group">
+            {% endif %}
+            {% set iterator = iterator + 1 %}
+
+            <div class="grid_1_of_4 images_1_of_4">
+                <img src="/photos/{{ product.mainphoto }}" alt=""/>
+                <h2>{{ product.productname }}</h2>
+                <p>{{ product.description }}</p>
 
 
-            <p>
-                {% if product.actualPrice != null  %}
-                    <span class="strike">{{ product.price }}</span><span class="price">{{ product.actualPrice }}</span>
-                {% else %}
-                    <span class="strike"></span><span class="price">{{ product.price }}</span>
-                {% endif %}
-            </p>
+                <p>
+                    {% if product.actualPrice != null %}
+                        <span class="strike">{{ product.price }}</span><span
+                            class="price">{{ product.actualPrice }}</span>
+                    {% else %}
+                        <span class="strike"></span><span class="price">{{ product.price }}</span>
+                    {% endif %}
+                </p>
 
-            <div class="button"><span><a href="#" class="details">Add to Cart</a></span></div>
-            <div class="button"><span><a href="#" class="details">Details</a></span></div>
-        </div>
-
-        {% if iterator == 4 %}
+                <div class="button"><span><a href="{{ path('my_shop.basket.add_product', {id: product.id}) }}"
+                                             class="details">Add to Cart</a></span></div>
+                <div class="button"><span><a href="#" class="details">Details</a></span></div>
             </div>
-            {% set iterator = 0 %}
-        {% endif %}
-    {% endfor %}
-    {% if iterator < 4 %}
+
+            {% if iterator == 4 %}
+                </div>
+                {% set iterator = 0 %}
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+        No products in this category
+    {% endif %}
+
+    {% if iterator < 4 and iterator != 0 %}
         </div>
     {% endif %}
 {% endblock %}

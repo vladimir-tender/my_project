@@ -8,17 +8,54 @@
 
 {% block body %}
     <div class="unreset">
-        <h4>Hello {{ app.user.email }}</h4>
+        <br>Hello {{ app.user.email }}
 
         <table>
             <tr>
                 <td>
-                    <a href="#">Current order</a><br>
+                    <a href="{{ path('my_shop.customer.main') }}">Current order</a><br>
                     <a href="#">Orders</a><br>
                     <a href="{{ path("my_shop.logout") }}">Exit</a><br>
                 </td>
-                <td>
-                    Current order
+                <td class="td-basket-list">
+                    <h4>Current order</h4>
+                    {% if order.products is defined %}
+                        <form action="{{ path('my_shop.basket.refresh') }}" method="post">
+                            <table>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Count</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                                {% for product in order.products %}
+                                    <tr>
+
+                                        <td>{{ product.model }}</td>
+                                        <td><input class="product-count" name="product_{{ product.id }}"
+                                                   value="{{ product.count }}"></td>
+                                        <td>{{ product.price }}</td>
+                                        <td>
+                                            <a href="{{ path('my_shop.basket.remove_product', {id: product.id}) }}">Delete</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="4" align="right">Total: {{ order.totalSum }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <input type="submit" value="Recount">
+                                        <a href="#">Checkout</a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </form>
+                    {% else %}
+                        <h4>Basket is empty</h4>
+                    {% endif %}
+
                 </td>
             </tr>
         </table>

@@ -10,3 +10,7 @@ services:
         class: MyShopBundle\Services\CustomerActionsHandler
         arguments:
               - "@doctrine.orm.entity_manager"
+    my_shop.basket.handler:
+        class: MyShopBundle\Services\BasketHandler
+        arguments:
+              - "@doctrine.orm.entity_manager"

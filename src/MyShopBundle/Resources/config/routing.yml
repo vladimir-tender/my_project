@@ -52,3 +52,19 @@ api.rest.getproducts:
 api.jsonrpc:
     path:    /api/jsonrpc/
     defaults: { _controller: MyShopBundle:API/JsonRPC/JsonRpc:index}
+
+my_shop.basket.add_product:
+    path:   /basket/product/{id}/add
+    defaults: { _controller: MyShopBundle:Customer:addProductToBasket}
+    requirements:
+        id: \d+
+
+my_shop.basket.refresh:
+    path:   /basket/refresh
+    defaults: { _controller: MyShopBundle:Customer:refreshBasket}
+
+my_shop.basket.remove_product:
+    path:   /basket/product/{id}/remove
+    defaults: { _controller: MyShopBundle:Customer:removeFromBasket}
+    requirements:
+        id: \d+
