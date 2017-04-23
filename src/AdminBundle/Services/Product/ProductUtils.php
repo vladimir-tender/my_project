@@ -4,7 +4,6 @@ namespace AdminBundle\Services\Product;
 
 
 use Doctrine\ORM\EntityManager;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\Paginator;
 
 class ProductUtils
@@ -23,8 +22,6 @@ class ProductUtils
         $manager = $this->getManager();
         $dql = "SELECT p FROM MyShopBundle:Product p ORDER BY p.productname";
         $queryResult = $manager->createQuery($dql)->getResult();
-        //var_dump($query);
-        //die();
 
         $result = $this->getPagination()->paginate($queryResult, $page, $countPerPage);
 

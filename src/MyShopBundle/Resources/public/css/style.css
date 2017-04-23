@@ -836,6 +836,13 @@ button.grey:hover, .search button.grey:hover {
     text-decoration: line-through;
 }
 
+.images_1_of_4 p span.default {
+    font-size: 18px;
+    font-family: 'Monda', sans-serif;
+    color: #444;
+
+}
+
 .images_1_of_4 p span.price {
     font-size: 18px;
     font-family: 'Monda', sans-serif;

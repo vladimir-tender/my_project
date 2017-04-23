@@ -10,6 +10,7 @@ services:
         class: MyShopBundle\Services\CustomerActionsHandler
         arguments:
               - "@doctrine.orm.entity_manager"
+              - "@knp_paginator"
     my_shop.basket.handler:
         class: MyShopBundle\Services\BasketHandler
         arguments:

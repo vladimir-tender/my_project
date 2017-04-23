@@ -2,10 +2,8 @@
 
 namespace MyShopBundle\Controller;
 
-use Ivory\CKEditorBundle\Exception\Exception;
-use MyShopBundle\Entity\Category;
+
 use MyShopBundle\Entity\Customer;
-use MyShopBundle\Entity\Product;
 use MyShopBundle\Form\CustomerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,15 +14,14 @@ class DefaultController extends Controller
     /**
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($page, Request $request)
     {
-        $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
+        $productPerPage = $request->cookies->get("products_per_page");
 
-        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
-        $productList = $customerActionsHandler->getAllProducts();
+        $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
+        $productList = $customerActionsHandler->getAllProducts($page, $productPerPage);
 
         return [
-            //"categoryList" => $categoryList,
             "productList" => $productList
         ];
     }
@@ -32,12 +29,9 @@ class DefaultController extends Controller
     public function productsByCategoryAction($category_id)
     {
         $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
-
-        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
         $productList = $customerActionsHandler->getProductsByCategory($category_id);
 
         return $this->render("@MyShop/Default/index.html.twig", [
-            //"categoryList" => $categoryList,
             "productList" => $productList
         ]);
     }
@@ -45,12 +39,9 @@ class DefaultController extends Controller
     public function productsByParentCategoryAction($parent_cat_id)
     {
         $customerActionsHandler = $this->get("my_shop.customer.handler.actions");
-
-        //$categoryList = $customerActionsHandler->getCategoriesForMenu();
         $productList = $customerActionsHandler->getProductsByParentCategory($parent_cat_id);
 
         return $this->render("@MyShop/Default/index.html.twig", [
-            //"categoryList" => $categoryList,
             "productList" => $productList
         ]);
     }

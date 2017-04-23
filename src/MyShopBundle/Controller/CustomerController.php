@@ -14,6 +14,7 @@ use MyShopBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends Controller
 {
@@ -42,7 +43,7 @@ class CustomerController extends Controller
 
             $this->addFlash("success", "Product added to basket");
             return $this->redirect($request->headers->get('referer'));
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw new \Exception("Some problem with add product to basket");
         }
 
@@ -56,7 +57,7 @@ class CustomerController extends Controller
             $basket_handler->refreshBasket($request, $customer);
             return $this->redirectToRoute("my_shop.customer.main");
         } catch (\Exception $exception) {
-            throw new Exception("Some problem with refresh basket");
+            throw new \Exception("Some problem with refresh basket. " . $exception);
         }
 
     }
@@ -67,6 +68,15 @@ class CustomerController extends Controller
         $basket_handler->removeProductFromBasket($product);
 
         return $this->redirectToRoute("my_shop.customer.main");
+    }
+
+    public function countBasketProductsAction()
+    {
+        $customer = $this->getUser();
+        $basket_handler = $this->get('my_shop.basket.handler');
+        $count = $basket_handler->countProductsBasket($customer);
+
+        return new Response($count);
     }
 
 

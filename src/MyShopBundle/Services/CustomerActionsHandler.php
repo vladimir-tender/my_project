@@ -11,6 +11,7 @@ namespace MyShopBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 use MyShopBundle\Entity\Product;
+use Knp\Component\Pager\Paginator;
 
 class CustomerActionsHandler
 {
@@ -18,14 +19,35 @@ class CustomerActionsHandler
      * @var EntityManager $em
      */
     private $em;
+    private $paginator;
 
-    public function __construct($em)
+    public function __construct($em, Paginator $paginator)
     {
         $this->em = $em;
+        $this->paginator = $paginator;
+    }
+
+    public function getAllProducts($page = 1, $productsPerPage)
+    {
+        $dql = "SELECT p FROM MyShopBundle:Product p WHERE p.status = 1 ORDER BY p.category ASC";
+        $productList = $this->em->createQuery($dql)->getResult();
+
+        if (is_null($productsPerPage)) {
+            $productsPerPage = 24;
+        }
+        /*$productList = $this->em->getRepository("MyShopBundle:Product")
+            ->findBy(["status" => "1"], ["category" => "ASC"]);*/
+
+        $productList = $this->filterActiveProducts($productList);
+        $this->countActualPrice($productList);
+
+        $productList = $this->paginator->paginate($productList, $page, $productsPerPage);
+
+        return $productList;
     }
 
     public function getProductsByParentCategory($parent_cat_id)
-    {
+    {//TODO: paginate getProductsByParentCategory
         $parentCategory = $this->em->getRepository("MyShopBundle:Category")
             ->findBy(['idparent' => $parent_cat_id], ['category' => 'ASC']);
 
@@ -37,26 +59,15 @@ class CustomerActionsHandler
             }
         }
 
-        $productList = $this->filterActiveProducts($productList);
-
         return $productList;
     }
 
     public function getProductsByCategory($cat_id)
-    {
+    {//TODO: paginate getProductsByCategory
         $category = $this->em->getRepository("MyShopBundle:Category")->find($cat_id);
         $productList = $category->getProductList();
-        $this->countActualPrice($productList);
 
         $productList = $this->filterActiveProducts($productList);
-
-        return $productList;
-    }
-
-    public function getAllProducts()
-    {
-        $productList = $this->em->getRepository("MyShopBundle:Product")
-            ->findBy(["status" => "1"], ["category" => "ASC"]);
         $this->countActualPrice($productList);
 
         return $productList;
@@ -92,6 +103,8 @@ class CustomerActionsHandler
         foreach ($productsList as $product) {
             if ($product->getStatus() == 1) {
                 $filteredProductList[] = $product;
+
+
             }
         }
         return $filteredProductList;

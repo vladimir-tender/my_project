@@ -129,4 +129,28 @@ class BasketHandler
         }
 
     }
+
+    public function countProductsBasket($customer)
+    {
+        $em = $this->em;
+        $countProducts = null;
+        if ($customer) {
+
+            $order = $em->getRepository("MyShopBundle:CustomerOrder")->findOneBy([
+                'status' => CustomerOrder::STATUS_CURRENT,
+                'customer' => $customer
+            ]);
+            /**@var CustomerOrder $order */
+            $products = $order->getProducts();
+
+
+            /**@var OrderProducts $product */
+            foreach ($products as $product) {
+                $countProducts += $product->getCount();
+            }
+            //return new \Symfony\Component\HttpFoundation\Response(['countProducts' => $countProducts]);
+        }
+        return $countProducts;
+
+    }
 }

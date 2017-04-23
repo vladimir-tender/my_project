@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Product
 {
+    const ACTIVE = 1;
+    const INACTIVE = 0;
     /**
      * @var int
      *

@@ -1,6 +1,8 @@
 my_shop.index:
-    path:     /
-    defaults: { _controller: MyShopBundle:Default:index}
+    path:     /{page}
+    defaults: { _controller: MyShopBundle:Default:index, page: 1}
+    requirements:
+        page: \d+
 
 my_shop.by.category:
     path:     /category/{category_id}

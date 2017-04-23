@@ -54,7 +54,13 @@
                         <a href="#" title="View my shopping cart" rel="nofollow">
                             <strong class="opencart"> </strong>
                             <span class="cart_title">Cart</span>
-                            <span class="no_product">(empty)</span>
+                            {% set cnt =  render(controller("MyShopBundle:Customer:countBasketProducts")) %}
+                            {% if cnt > 0 %}
+                                <span class="no_product"> ( {{ cnt }} pcs.)</span>
+                            {% else %}
+                                <span class="no_product">(empty)</span>
+                            {% endif %}
+
                         </a>
                     </div>
                 </div>
@@ -166,7 +172,7 @@
 
                     <span>
                         {% if app.user.email is defined %}
-                            <a href="{{ path("my_shop.customer.main")}}">
+                            <a href="{{ path("my_shop.customer.main") }}">
                                  <img src="{{ asset("bundles/myshop/images/login.png") }}" alt=""
                                       title="{{ app.user.email }}"
                                       style="background: lightgreen;"/>
@@ -247,7 +253,7 @@
             </div>
         </div>
         <div class="copy_right">
-            <p>Compant Name © All rights Reseverd | Design by <a href="http://w3layouts.com">W3Layouts</a></p>
+            <p>Company Name © All rights Reseverd | Design by <a href="http://w3layouts.com">W3Layouts</a></p>
         </div>
     </div>
 </div>

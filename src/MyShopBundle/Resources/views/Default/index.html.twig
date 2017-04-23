@@ -1,6 +1,10 @@
 {% extends "MyShopBundle::layout.html.twig" %}
 {#Ctrl + Space#}
 
+{% block additional_js %}
+    <script type="text/javascript" src="{{ asset("bundles/myshop/myjs/sort.js") }}"></script>
+{% endblock %}
+
 {% block productList %}
     <div class="content">
     <div class="content_top">
@@ -10,35 +14,33 @@
         <div>
             <br><br>
             Sort by:
-            <select>
+            <select name="sort_by">
                 <option>Lowest Price</option>
                 <option>Highest Price</option>
-                <option>Lowest Price</option>
-                <option>Lowest Price</option>
-                <option>Lowest Price</option>
-                <option>In Stock</option>
+                <option>With discount</option>
+                <option>Without discount</option>
             </select>
-            <br>
             Show:
-            <select>
+            <select name="show_count">
+                <option></option>
                 <option>4</option>
                 <option>8</option>
                 <option>12</option>
-                <option>16</option>
-                <option>20</option>
-                <option>In Stock</option>
+                <option>24</option>
             </select>
 
         </div>
         <div class="page-no">
-            <p>Result Pages:
-            <ul>
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li>[<a href="#"> Next>>></a>]</li>
-            </ul>
-
+            <p>
+                {{ knp_pagination_render(productList) }}
+                <!--
+                <ul>
+                    <li><a href="#">1</a></li>
+                    <li class="active"><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li>[<a href="#"> Next>>></a>]</li>
+                </ul>
+                -->
         </div>
         <div class="clear"></div>
     </div>
@@ -60,10 +62,11 @@
 
                 <p>
                     {% if product.actualPrice != null %}
-                        <span class="strike">{{ product.price }}</span><span
-                            class="price">{{ product.actualPrice }}</span>
+                        <span class="strike">{{ product.price | localizedcurrency('USD') }}</span>
+                        <span class="price">{{ product.actualPrice | localizedcurrency('USD') }}</span>
                     {% else %}
-                        <span class="strike"></span><span class="price">{{ product.price }}</span>
+                        <span class="strike"></span><span
+                            class="default">{{ product.price | localizedcurrency('USD') }}</span>
                     {% endif %}
                 </p>
 
